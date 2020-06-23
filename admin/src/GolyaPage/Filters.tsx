@@ -1,19 +1,11 @@
 import React, {useState} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import styled from 'styled-components';
 
-interface FilterState {
-    nev: string;
-    nap: {
-        hetfo: boolean,
-        kedd: boolean,
-        szerda: boolean,
-        csutortok: boolean,
-        pentek: boolean
-    },
-    szak: string[],
-}
+import { InitialState } from '../utils/types';
+import { changeFilter } from '../actions';
 
 enum Napok {
     hetfo,
@@ -52,19 +44,11 @@ const FilterItem = styled.li`
 
 const Filters = () => {
 
+    const dispatch = useDispatch();
+
     const [showFilters, setShowFilters] = useState<boolean>(false);
 
-    const [filters, setFilters] = useState<FilterState>({
-        nev: "",
-        nap: {
-            hetfo: false,
-            kedd: false,
-            szerda: false,
-            csutortok: false,
-            pentek: false,
-        },
-        szak: []
-    });
+    const filters = useSelector((state: InitialState) => {return state.filters});
 
     const changeShowFilter = () => {
         setShowFilters(!showFilters);
@@ -72,34 +56,14 @@ const Filters = () => {
 
     const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.value === "") {
-            setFilters({...filters, nev: ""});
+            setNevFilter("")
             return
         }
-        setFilters(
-            {...filters, nev: event.target.value}
-        );
+        setNevFilter(event.target.value);
     }
 
     const onDayChange = (event: React.ChangeEvent<HTMLInputElement>, id: Napok) => {
-        const { nap } = filters;
-        switch (id) {
-            case Napok.hetfo:
-                nap.hetfo = event.target.checked;
-                break;
-            case Napok.kedd:
-                nap.kedd = event.target.checked;
-                break;
-            case Napok.szerda:
-                nap.szerda = event.target.checked;
-                break;
-            case Napok.csutortok:
-                nap.csutortok = event.target.checked;
-                break;
-            case Napok.pentek:
-                nap.pentek = event.target.checked;
-                break;
-        }
-        setFilters({...filters, nap});
+        setNapFilter(id, event.target.checked);
     }
 
     const onSzakSelected = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -108,18 +72,14 @@ const Filters = () => {
 
         for (let i = 0; i < options.length; i++) {
             if (options[i].selected) {
-                console.log(options[i]);
                 selectedOptions.push(options[i].value)
             }
         }
-
-        setFilters({...filters, szak: selectedOptions});
+        setSzakFilter(selectedOptions);
     }
 
     const getActiveFilters = () => {
         const aktivSzurok : any[] = [];
-
-        console.log(navigator);
 
         if (filters.nev !== "") {
             aktivSzurok.push(<FilterItem key="nev" onClick={() => removeFilter(FilterType.nev)} >Név: {filters.nev}</FilterItem>)
@@ -156,25 +116,53 @@ const Filters = () => {
         return null;
     }
 
+    const setNevFilter = (ujNev: string) => {
+        dispatch(changeFilter("nev", ujNev));
+    }
+
+    const setNapFilter = (nap: Napok, ujNap: boolean) => {
+        switch (nap) {
+            case Napok.hetfo:
+                dispatch(changeFilter("hetfo", ujNap));
+                break;
+            case Napok.kedd:
+                dispatch(changeFilter("kedd", ujNap));
+                break;
+            case Napok.szerda:
+                dispatch(changeFilter("szerda", ujNap));
+                break;
+            case Napok.csutortok:
+                dispatch(changeFilter("csutortok", ujNap));
+                break;
+            case Napok.pentek:
+                dispatch(changeFilter("pentek", ujNap));
+                break;
+        }
+    }
+
+    const setSzakFilter = (szakok: string[]) => {
+        dispatch(changeFilter("szak", szakok));
+    }
+
     const removeFilter = (type: FilterType, text?: string) => {
         switch (type) {
             case FilterType.nev:
-                setFilters({...filters,nev: "",});
+                setNevFilter("")
                 break;
             case FilterType.hetfo:
-                setFilters({...filters, nap: {...filters.nap, hetfo: false}});
+                setNapFilter(Napok.hetfo, false);
                 break;
             case FilterType.kedd:
-                setFilters({...filters, nap: {...filters.nap, kedd: false}});
+                setNapFilter(Napok.kedd, false);
                 break;
             case FilterType.szerda:
-                setFilters({...filters, nap: {...filters.nap, szerda: false}});
+                setNapFilter(Napok.szerda, false);
                 break;
             case FilterType.csutortok:
-                setFilters({...filters, nap: {...filters.nap, csutortok: false}});
+                setNapFilter(Napok.csutortok, false);
                 break;
             case FilterType.pentek:
-                setFilters({...filters, nap: {...filters.nap, pentek: false}});
+                setNapFilter(Napok.pentek, false);
                 break;
             case FilterType.szak:
                 const szakok = Object.assign([], filters.szak);
@@ -182,14 +170,12 @@ const Filters = () => {
                 if (index !== -1) {
                     szakok.splice(index, 1);
                 }
-                setFilters({...filters, szak: szakok});
+                setSzakFilter(szakok);
                 break;
-
             default:
                 break;
         }
     }
-
 
     const ctrlText =  /mac/i.test(navigator.userAgent) ? "Cmd" : "Ctrl";
 
