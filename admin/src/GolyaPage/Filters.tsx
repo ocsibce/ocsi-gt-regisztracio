@@ -179,7 +179,7 @@ const Filters = () => {
             case FilterType.szak:
                 const szakok = Object.assign([], filters.szak);
                 const index = filters.szak.indexOf(text!)
-                if (index != -1) {
+                if (index !== -1) {
                     szakok.splice(index, 1);
                 }
                 setFilters({...filters, szak: szakok});

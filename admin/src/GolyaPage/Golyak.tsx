@@ -6,6 +6,7 @@ import Jumbotron from 'react-bootstrap/Jumbotron';
 
 import Control from './Control';
 import Filters from './Filters';
+import GolyaList from './GolyaList';
 
 const Golyak = () => {
 
@@ -23,6 +24,7 @@ const Golyak = () => {
                     <Jumbotron>
                         <Control />
                         <Filters />
+                        <GolyaList />
                     </Jumbotron>
                 </Col>
             </Row>
