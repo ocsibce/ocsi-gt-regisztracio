@@ -43,7 +43,7 @@ const Controls = () => {
         });
 
         const csvContent = "data:text/csv;charset=utf-8,\uFEFF"
-            + rows.map(row => row.join(",")).join("\n");
+            + rows.map(row => row.join(";")).join("\n");
 
         const encodedUri = encodeURI(csvContent);
 
