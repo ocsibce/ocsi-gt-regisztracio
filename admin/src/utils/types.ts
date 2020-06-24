@@ -10,12 +10,12 @@ export type GolyaAdat = {
     szuletesDatum?: Date;
     szuletesHely?: string;
     poloMeret?: string;
-    napok?: Napok,
+    napok: Napok,
     anyjaNeve?: string;
     allergia?: string | null;
     etelerzekeny?: string | null;
     egyeb?: string | null;
-    regisztralt?: Date;
+    regisztralt: number;
 }
 
 type Napok = {

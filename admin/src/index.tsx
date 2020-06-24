@@ -8,50 +8,71 @@ import * as serviceWorker from './serviceWorker';
 import { InitialState } from './utils/types';
 import configureStore from './store';
 
+const testGolyak = [
+  {
+      id: 100,
+      nev: "Kis Istvan",
+      email: "kis.istvan@gmail.com",
+      szak: "tv",
+      regisztralt: 1592396405469,
+      napok: {
+        hetfo: true,
+        kedd: true,
+        szerda: false,
+        csutortok: false,
+        pentek: false,
+      }
+  },
+  {
+      id: 434,
+      nev: "Nagy Peter",
+      email: "nagy.peter@gmail.com",
+      szak: "gm",
+      regisztralt: 1591796405469,
+      napok: {
+        hetfo: true,
+        kedd: true,
+        szerda: true,
+        csutortok: true,
+        pentek: true,
+      }
+  },
+  {
+      id: 500,
+      nev: "Kovacs Erzsi",
+      email: "kovacs.erzsi@gmail.com",
+      szak: "ginf",
+      regisztralt: 1590796405469,
+      napok: {
+        hetfo: false,
+        kedd: false,
+        szerda: false,
+        csutortok: true,
+        pentek: true,
+      }
+  },
+  {
+    id: 666,
+    nev: "Szabo Nora",
+    email: "szabo.nora@gmail.com",
+    szak: "hr",
+    regisztralt: 1591796405469,
+    napok: {
+      hetfo: false,
+      kedd: false,
+      szerda: true,
+      csutortok: true,
+      pentek: true,
+    }
+}
+];
+
 export const initialState: InitialState = {
-  golyaLista: [
-    {
-        id: 1,
-        nev: "Kis Istvan",
-        email: "kis.istvan@gmail.com",
-        szak: "tv"
-    },
-    {
-        id: 2,
-        nev: "Nagy Peter",
-        email: "nagy.peter@gmail.com",
-        szak: "gm"
-    },
-    {
-        id: 3,
-        nev: "Kovacs Erzsi",
-        email: "kovacs.erszi@gmail.com",
-        szak: "ginf"
-    }
-  ],
-  filteredGolyaLista: [
-    {
-        id: 1,
-        nev: "Kis Istvan",
-        email: "kis.istvan@gmail.com",
-        szak: "tv"
-    },
-    {
-        id: 2,
-        nev: "Nagy Peter",
-        email: "nagy.peter@gmail.com",
-        szak: "gm"
-    },
-    {
-        id: 3,
-        nev: "Kovacs Erzsi",
-        email: "kovacs.erszi@gmail.com",
-        szak: "ginf"
-    }
-  ],
+  golyaLista: testGolyak,
+  filteredGolyaLista: testGolyak,
   filters: {
-    minId: -1,
-    maxId: -1,
+    minId: 0,
+    maxId: 0,
     nev: "",
     nap: {
       hetfo: false,

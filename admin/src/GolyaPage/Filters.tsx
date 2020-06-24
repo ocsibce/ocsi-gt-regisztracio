@@ -50,7 +50,7 @@ const Filters = () => {
 
     const dispatch = useDispatch();
 
-    const [showFilters, setShowFilters] = useState<boolean>(true);
+    const [showFilters, setShowFilters] = useState<boolean>(false);
 
     const filters = useSelector((state: InitialState) => {return state.filters});
 
@@ -98,44 +98,6 @@ const Filters = () => {
         setDateFilter("max", new Date(event.target.value).getTime());
     }
 
-    const getActiveFilters = () => {
-        const aktivSzurok : any[] = [];
-
-        if (filters.nev !== "") {
-            aktivSzurok.push(<FilterItem key="nev" onClick={() => removeFilter(FilterType.nev)} >Név: {filters.nev}</FilterItem>)
-        }
-
-        if (filters.nap.hetfo) {
-            aktivSzurok.push(<FilterItem key="hetfo" onClick={() => removeFilter(FilterType.hetfo)} >Hétfő</FilterItem>)
-        }
-        if (filters.nap.kedd) {
-            aktivSzurok.push(<FilterItem key="kedd" onClick={() => removeFilter(FilterType.kedd)} >Kedd</FilterItem>)
-        }
-        if (filters.nap.szerda) {
-            aktivSzurok.push(<FilterItem key="szerda" onClick={() => removeFilter(FilterType.szerda)} >Szerda</FilterItem>)
-        }
-        if (filters.nap.csutortok) {
-            aktivSzurok.push(<FilterItem key="csutortok" onClick={() => removeFilter(FilterType.csutortok)} >Csütörtök</FilterItem>)
-        }
-        if (filters.nap.pentek) {
-            aktivSzurok.push(<FilterItem key="pentek" onClick={() => removeFilter(FilterType.pentek)} >Péntek</FilterItem>)
-        }
-
-        filters.szak.forEach(szak => {
-            aktivSzurok.push(<FilterItem key={szak} onClick={() => removeFilter(FilterType.szak, szak)} >{szak}</FilterItem>)
-        })
-
-        if (aktivSzurok.length > 0) {
-            return <div className="mt-3">
-                        <h3>Aktív szűrők</h3>
-                            <FilterList>
-                                {aktivSzurok}
-                            </FilterList>
-                    </div>
-        }
-        return null;
-    }
-
     const setNevFilter = (ujNev: string) => {
         dispatch(changeFilter("nev", ujNev));
     }
@@ -172,6 +134,57 @@ const Filters = () => {
         dispatch(changeFilter(`${type}RegDate`, ujDate));
     }
 
+    const getActiveFilters = () => {
+        const aktivSzurok : any[] = [];
+
+        if (filters.nev !== "") {
+            aktivSzurok.push(<FilterItem key="nev" onClick={() => removeFilter(FilterType.nev)} >Név: {filters.nev}</FilterItem>)
+        }
+
+        if (filters.nap.hetfo) {
+            aktivSzurok.push(<FilterItem key="hetfo" onClick={() => removeFilter(FilterType.hetfo)} >Hétfő</FilterItem>)
+        }
+        if (filters.nap.kedd) {
+            aktivSzurok.push(<FilterItem key="kedd" onClick={() => removeFilter(FilterType.kedd)} >Kedd</FilterItem>)
+        }
+        if (filters.nap.szerda) {
+            aktivSzurok.push(<FilterItem key="szerda" onClick={() => removeFilter(FilterType.szerda)} >Szerda</FilterItem>)
+        }
+        if (filters.nap.csutortok) {
+            aktivSzurok.push(<FilterItem key="csutortok" onClick={() => removeFilter(FilterType.csutortok)} >Csütörtök</FilterItem>)
+        }
+        if (filters.nap.pentek) {
+            aktivSzurok.push(<FilterItem key="pentek" onClick={() => removeFilter(FilterType.pentek)} >Péntek</FilterItem>)
+        }
+
+        filters.szak.forEach(szak => {
+            aktivSzurok.push(<FilterItem key={szak} onClick={() => removeFilter(FilterType.szak, szak)} >{szak}</FilterItem>)
+        })
+
+        if (filters.minId > 0) {
+            aktivSzurok.push(<FilterItem key="minId" onClick={() => removeFilter(FilterType.minId)}>Min ID: {filters.minId} </FilterItem>)
+        }
+        if (filters.maxId > 0) {
+            aktivSzurok.push(<FilterItem key="maxId" onClick={() => removeFilter(FilterType.maxId)}>Max ID: {filters.maxId} </FilterItem>)
+        }
+        if (filters.regDateKezdo > 0) {
+            aktivSzurok.push(<FilterItem key="minRegDate" onClick={() => removeFilter(FilterType.minRegDate)}>Regisztráció eleje: {formatDate(filters.regDateKezdo, "short")} </FilterItem>)
+        }
+        if (filters.regDateUtolso > 0) {
+            aktivSzurok.push(<FilterItem key="maxRegDate" onClick={() => removeFilter(FilterType.maxRegDate)}>Regisztráció vége: {formatDate(filters.regDateUtolso, "short")} </FilterItem>)
+        }
+
+        if (aktivSzurok.length > 0) {
+            return <div className="mt-3">
+                        <h3>Aktív szűrők</h3>
+                            <FilterList>
+                                {aktivSzurok}
+                            </FilterList>
+                    </div>
+        }
+        return null;
+    }
+
     const removeFilter = (type: FilterType, text?: string) => {
         switch (type) {
             case FilterType.nev:
@@ -201,10 +214,10 @@ const Filters = () => {
                 setSzakFilter(szakok);
                 break;
             case FilterType.minId:
-                setIdFilter("min", -1);
+                setIdFilter("min", 0);
                 break;
             case FilterType.maxId:
-                setIdFilter("max", -1);
+                setIdFilter("max", 0);
                 break;
             case FilterType.minRegDate:
                 setDateFilter("min", 0);
@@ -219,13 +232,16 @@ const Filters = () => {
 
     const ctrlText =  /mac/i.test(navigator.userAgent) ? "Cmd" : "Ctrl";
 
-    const formatDate = (milliseconds: number): string => {
+    const formatDate = (milliseconds: number, type: "short" | "long"): string => {
         const date = new Date(milliseconds);
         const month = date.getMonth() < 9 ? `0${date.getMonth()+1}` : date.getMonth() + 1;
         const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
         const hours = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
-        const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()
-        return `${date.getFullYear()}-${month}-${day}T${hours}:${minutes}`
+        const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+        if (type === "long") {
+            return `${date.getFullYear()}-${month}-${day}T${hours}:${minutes}`
+        }
+        return `${date.getFullYear()}-${month}-${day}`;
     }
 
     const filterForm = showFilters ? <>
@@ -315,13 +331,13 @@ const Filters = () => {
                 <Col>
                     <Form.Group controlId="kezdoRegDateFilter">
                         <Form.Label>Regisztráció idő eleje</Form.Label>
-                        <Form.Control type="datetime-local" onChange={onMinRegDateChanged} value={formatDate(filters.regDateKezdo)}></Form.Control>
+                        <Form.Control type="datetime-local" onChange={onMinRegDateChanged} value={formatDate(filters.regDateKezdo, "long")}></Form.Control>
                     </Form.Group>
                 </Col>
                 <Col>
                     <Form.Group controlId="utolsoRegDateFilter">
                         <Form.Label>Regisztráció idő vége</Form.Label>
-                        <Form.Control type="datetime-local" onChange={onMaxRegDateChanged} value={formatDate(filters.regDateUtolso)}></Form.Control>
+                        <Form.Control type="datetime-local" onChange={onMaxRegDateChanged} value={formatDate(filters.regDateUtolso, "long")}></Form.Control>
                     </Form.Group>
                 </Col>
             </Form.Row>
