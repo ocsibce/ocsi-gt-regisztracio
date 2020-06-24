@@ -12,7 +12,7 @@ const Golyak = () => {
 
     // BLOCKED - Request data -> API needed
     // DONE - Show data
-    // TODO - Export CSV
+    // DONE - Export CSV
     // DONE - Filtering
     // BLOCKED - Delete all data -> API needed
 

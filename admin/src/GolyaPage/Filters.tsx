@@ -5,6 +5,7 @@ import Col from 'react-bootstrap/Col';
 import styled from 'styled-components';
 
 import { InitialState } from '../utils/types';
+import { formatDate } from '../utils/utils';
 import { changeFilter } from '../actions';
 
 enum Napok {
@@ -231,18 +232,6 @@ const Filters = () => {
     }
 
     const ctrlText =  /mac/i.test(navigator.userAgent) ? "Cmd" : "Ctrl";
-
-    const formatDate = (milliseconds: number, type: "short" | "long"): string => {
-        const date = new Date(milliseconds);
-        const month = date.getMonth() < 9 ? `0${date.getMonth()+1}` : date.getMonth() + 1;
-        const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
-        const hours = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
-        const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
-        if (type === "long") {
-            return `${date.getFullYear()}-${month}-${day}T${hours}:${minutes}`
-        }
-        return `${date.getFullYear()}-${month}-${day}`;
-    }
 
     const filterForm = showFilters ? <>
         <Form>

@@ -3,18 +3,18 @@ export type GolyaAdat = {
     nev: string;
     email: string;
     szak: string;
-    telefonszam?: string;
-    cim?: string;
-    nem?: "Férfi" | "Nő";
-    oktatasiAzonosita?: number;
-    szuletesDatum?: Date;
-    szuletesHely?: string;
-    poloMeret?: string;
+    telefonszam: string;
+    cim: string;
+    nem: "Férfi" | "Nő";
+    oktatasiAzonosito: number;
+    szuletesDatum: string;
+    szuletesHely: string;
+    poloMeret: string;
     napok: Napok,
-    anyjaNeve?: string;
-    allergia?: string | null;
-    etelerzekeny?: string | null;
-    egyeb?: string | null;
+    anyjaNeve: string;
+    allergia: string | null;
+    etelerzekeny: string | null;
+    egyeb: string | null;
     regisztralt: number;
 }
 
