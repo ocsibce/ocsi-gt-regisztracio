@@ -22,7 +22,11 @@ enum FilterType {
     szerda,
     csutortok,
     pentek,
-    szak
+    szak,
+    minId,
+    maxId,
+    minRegDate,
+    maxRegDate
 }
 
 const FilterList = styled.ul`
@@ -46,7 +50,7 @@ const Filters = () => {
 
     const dispatch = useDispatch();
 
-    const [showFilters, setShowFilters] = useState<boolean>(false);
+    const [showFilters, setShowFilters] = useState<boolean>(true);
 
     const filters = useSelector((state: InitialState) => {return state.filters});
 
@@ -76,6 +80,22 @@ const Filters = () => {
             }
         }
         setSzakFilter(selectedOptions);
+    }
+
+    const onMinIdChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setIdFilter("min", parseInt(event.target.value));
+    }
+
+    const onMaxIdChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setIdFilter("max", parseInt(event.target.value));
+    }
+
+    const onMinRegDateChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setDateFilter("min", new Date(event.target.value).getTime());
+    }
+
+    const onMaxRegDateChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setDateFilter("max", new Date(event.target.value).getTime());
     }
 
     const getActiveFilters = () => {
@@ -144,6 +164,14 @@ const Filters = () => {
         dispatch(changeFilter("szak", szakok));
     }
 
+    const setIdFilter = (type: "min" | "max", ujId: number) => {
+        dispatch(changeFilter(`${type}Id`, ujId));
+    }
+
+    const setDateFilter = (type: "min" | "max", ujDate: number) => {
+        dispatch(changeFilter(`${type}RegDate`, ujDate));
+    }
+
     const removeFilter = (type: FilterType, text?: string) => {
         switch (type) {
             case FilterType.nev:
@@ -172,6 +200,18 @@ const Filters = () => {
                 }
                 setSzakFilter(szakok);
                 break;
+            case FilterType.minId:
+                setIdFilter("min", -1);
+                break;
+            case FilterType.maxId:
+                setIdFilter("max", -1);
+                break;
+            case FilterType.minRegDate:
+                setDateFilter("min", 0);
+                break;
+            case FilterType.maxRegDate:
+                setDateFilter("max", 0);
+                break;
             default:
                 break;
         }
@@ -179,7 +219,16 @@ const Filters = () => {
 
     const ctrlText =  /mac/i.test(navigator.userAgent) ? "Cmd" : "Ctrl";
 
-    const filter = showFilters ? <>
+    const formatDate = (milliseconds: number): string => {
+        const date = new Date(milliseconds);
+        const month = date.getMonth() < 9 ? `0${date.getMonth()+1}` : date.getMonth() + 1;
+        const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+        const hours = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
+        const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()
+        return `${date.getFullYear()}-${month}-${day}T${hours}:${minutes}`
+    }
+
+    const filterForm = showFilters ? <>
         <Form>
             <Form.Row>
                 <Col>
@@ -248,6 +297,34 @@ const Filters = () => {
                     </Form.Group>
                 </Col>
             </Form.Row>
+            <Form.Row>
+                <Col>
+                    <Form.Group controlId="minIdFilter">
+                        <Form.Label>Kezdő ID</Form.Label>
+                        <Form.Control type="number" placeholder="Kezdő ID" onChange={onMinIdChanged} value={filters.minId}></Form.Control>
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group controlId="maxIdFilter">
+                        <Form.Label>Utolsó ID</Form.Label>
+                        <Form.Control type="number" placeholder="Utolsó ID" onChange={onMaxIdChanged} value={filters.maxId}></Form.Control>
+                    </Form.Group>
+                </Col>
+            </Form.Row>
+            <Form.Row>
+                <Col>
+                    <Form.Group controlId="kezdoRegDateFilter">
+                        <Form.Label>Regisztráció idő eleje</Form.Label>
+                        <Form.Control type="datetime-local" onChange={onMinRegDateChanged} value={formatDate(filters.regDateKezdo)}></Form.Control>
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group controlId="utolsoRegDateFilter">
+                        <Form.Label>Regisztráció idő vége</Form.Label>
+                        <Form.Control type="datetime-local" onChange={onMaxRegDateChanged} value={formatDate(filters.regDateUtolso)}></Form.Control>
+                    </Form.Group>
+                </Col>
+            </Form.Row>
         </Form>
         {getActiveFilters()}
     </>
@@ -258,7 +335,7 @@ const Filters = () => {
     return (
         <div className="mt-3">
             <h2 onClick={changeShowFilter} style={{cursor: "pointer", userSelect: "none"}}>Szűrők {arrow}</h2>
-            { filter }
+            { filterForm }
         </div>
     );
 }

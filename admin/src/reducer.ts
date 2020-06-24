@@ -38,6 +38,12 @@ const reducer: Reducer<InitialState, any> = (state: InitialState | undefined = i
                 case "maxId":
                     filters.maxId = newValue;
                     break;
+                case "minRegDate":
+                    filters.regDateKezdo = newValue;
+                    break;
+                case "maxRegDate":
+                    filters.regDateUtolso = newValue;
+                    break;
                 default:
                     break;
             }

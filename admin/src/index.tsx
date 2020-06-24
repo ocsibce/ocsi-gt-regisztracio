@@ -60,7 +60,9 @@ export const initialState: InitialState = {
       csutortok: false,
       pentek: false
     },
-    szak: []
+    szak: [],
+    regDateKezdo: 0,
+    regDateUtolso: 0,
   }
 };
 

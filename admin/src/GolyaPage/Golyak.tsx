@@ -10,11 +10,11 @@ import GolyaList from './GolyaList';
 
 const Golyak = () => {
 
-    // TODO - Request data
-    // TODO - Show data
+    // BLOCKED - Request data -> API needed
+    // DONE - Show data
     // TODO - Export CSV
     // TODO - Filtering
-    // TODO - Delete all data
+    // BLOCKED - Delete all data -> API needed
 
     return (
         <Container>

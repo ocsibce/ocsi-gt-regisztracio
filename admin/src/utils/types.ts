@@ -32,6 +32,8 @@ export type Filter = {
     nev: string;
     nap: Napok,
     szak: string[],
+    regDateKezdo: number,
+    regDateUtolso: number,
 }
 
 export type InitialState = {
