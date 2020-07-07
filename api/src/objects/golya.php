@@ -46,6 +46,39 @@
             return $stmt;
         }
 
+        public function readOne() {
+            $query = "SELECT * FROM golyak WHERE id = 2 LIMIT 0,1";
+
+            $stmt = $this->conn->prepare($query);
+
+            $stmt->bindParam(1, $this->id);
+
+            $stmt->execute();
+
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $this->nev = $row['nev'];
+            $this->email = $row['email'];
+            $this->szak = $row['szak'];
+            $this->telefonszam = $row['telefonszam'];
+            $this->cim = $row['cim'];
+            $this->nem = $row['nem'];
+            $this->oktatasiAzonosito = $row['oktatasiAzonosito'];
+            $this->szuletesiDatum = $row['szuletesiDatum'];
+            $this->szuletesiHely = $row['szuletesiHely'];
+            $this->poloMeret = $row['poloMeret'];
+            $this->hetfo = $row['hetfo'];
+            $this->kedd = $row['kedd'];
+            $this->szerda = $row['szerda'];
+            $this->csutortok = $row['csutortok'];
+            $this->pentek = $row['pentek'];
+            $this->anyjaNeve = $row['anyjaNeve'];
+            $this->allergia = $row['allergia'];
+            $this->etelerzekenyseg = $row['etelerzekenyseg'];
+            $this->egyeb = $row['egyeb'];
+            $this->regisztracioDatuma = $row['regisztracioDatuma'];
+        }
+
         public function create() {
 
             $query = "INSERT INTO " . $this->table_name .
