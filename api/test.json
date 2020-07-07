@@ -1,0 +1,40 @@
+[
+    {
+        "nev": "Kovacs István",
+        "email": "kovacs.istvan@gmail.com",
+        "szak": "tv",
+        "telefonszam": "6453634673",
+        "cim": "1234 Kisfalu, Kis utca 43",
+        "nem": 1,
+        "szuletesiDatum": "1999-01-03",
+        "szuletesiHely": "Nagyváros",
+        "poloMeret": "M",
+        "hetfo": "0",
+        "kedd": "0",
+        "szerda": "1",
+        "csutortok": "1",
+        "pentek": "1",
+        "anyjaNeve": "Kovács Anna"
+    },
+    {
+        "nev": "Szabo Anna",
+        "email": "szabo.anna@gmail.com",
+        "szak": "gm",
+        "telefonszam": "645424673",
+        "cim": "1256 Nagyfalu, Kis utca 43",
+        "nem": 0,
+        "oktatasiAzonosito": 4232352,
+        "szuletesiDatum": "1998-03-03",
+        "szuletesiHely": "Nagyváros",
+        "poloMeret": "XS",
+        "hetfo": "1",
+        "kedd": "1",
+        "szerda": "1",
+        "csutortok": "1",
+        "pentek": "1",
+        "anyjaNeve": "Kovács Panna",
+        "allergia": "Minden",
+        "etelerzekenyseg": "Minden",
+        "egyeb": "Nem is akarok menni"
+    }
+]
