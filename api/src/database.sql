@@ -22,3 +22,17 @@ CREATE TABLE `adatbazis`.`golyak` (
     `regisztracioDatuma` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
     PRIMARY KEY (`id`),
     UNIQUE `unique_email` (`email`)) ENGINE = InnoDB;
+
+INSERT INTO `golyak` (`id`, `nev`, `email`, `szak`, `telefonszam`, `cim`, `nem`,
+    `oktatasiAzonosito`, `szuletesiDatum`, `szuletesiHely`, `poloMeret`,
+    `hetfo`, `kedd`, `szerda`, `csutortok`, `pentek`, `anyjaNeve`, `allergia`,
+    `etelerzekenyseg`, `egyeb`, `regisztracioDatuma`) VALUES (
+        NULL, 'Kiss Pista', 'kiss.pista@gmail.com', 'HR', '45235363',
+        '1111 Nagyvaros, Fő utca 25', '1', '563646364', '2020-04-05',
+        'Nagyváros', 'XL', '1', '1', '1', '1', '1',
+        'Kiss Istvánné', 'nincs', 'nincs', 'nincs', CURRENT_TIMESTAMP),
+    (
+        NULL, 'Nagy Lujza', 'nagy.lujza@gmail.com', 'Ginf', '5345902332',
+        '1112 Kisváros, Petőfi utca 13', '0', '543634634', '2020-04-20',
+        'Kisfalu', 'S', '1', '1', '1', '1', '0',
+        'Nagy Erzsébet', NULL, NULL, NULL, CURRENT_TIMESTAMP)

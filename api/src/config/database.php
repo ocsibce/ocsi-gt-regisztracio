@@ -1,22 +1,21 @@
 <?php
+
     class Database {
-        private $host = "localhost";
-        private $db_name = "regisztracioDb";
-        private $db_username = "bceocsi";
-        private $db_password = "ocsi_jelszo";
+        private $host = "database";
+        private $db_name = "adatbazis";
+        private $db_username = "root";
+        private $db_password = "jelszo";
         public $conn;
 
-        public function getConnection() {
+        public function getConnection(){
+
             $this->conn = null;
 
-            try {
-                $this->conn = new mysqli($this->$host,
-                    $this->$db_username,
-                    $this->$db_password,
-                    $this->$db_name);
+            try{
+                $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->db_username, $this->db_password);
                 $this->conn->exec("set names utf8");
-            } catch (Exception $e) {
-                echo "Connection error: " . $e->getMessage();
+            }catch(PDOException $exception){
+                echo "Connection error: " . $exception->getMessage();
             }
 
             return $this->conn;
