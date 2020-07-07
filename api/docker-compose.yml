@@ -1,0 +1,41 @@
+version: "3.7"
+
+services:
+  php:
+    build: ./.php
+    ports:
+      - 80:80
+    networks:
+      - php_app_network
+    volumes:
+      - ./src/:/var/www/html/
+
+  database:
+    build: ./.mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: jelszo
+    ports:
+      - 3306:3306
+    networks:
+      - php_app_network
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8080:80
+    environment:
+      MYSQL_ROOT_PASSWORD: jelszo
+      PMA_HOST: database
+      PMA_PORT: 3306
+    depends_on:
+      - database
+    networks:
+      - php_app_network
+
+networks:
+  php_app_network:
+
+volumes:
+  dbdata:
