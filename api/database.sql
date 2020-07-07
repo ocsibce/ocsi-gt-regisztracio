@@ -1,0 +1,38 @@
+CREATE TABLE `adatbazis`.`golyak` (
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+    `nev` VARCHAR(256) NOT NULL ,
+    `email` VARCHAR(256) NOT NULL ,
+    `szak` VARCHAR(256) NOT NULL ,
+    `telefonszam` VARCHAR(25) NOT NULL ,
+    `cim` VARCHAR(256) NOT NULL ,
+    `nem` BOOLEAN NOT NULL ,
+    `oktatasiAzonosito` VARCHAR(20) NULL ,
+    `szuletesiDatum` DATE NOT NULL ,
+    `szuletesiHely` VARCHAR(128) NOT NULL ,
+    `poloMeret` VARCHAR(6) NOT NULL ,
+    `hetfo` BOOLEAN NOT NULL ,
+    `kedd` BOOLEAN NOT NULL ,
+    `szerda` BOOLEAN NOT NULL ,
+    `csutortok` BOOLEAN NOT NULL ,
+    `pentek` BOOLEAN NOT NULL ,
+    `anyjaNeve` VARCHAR(256) NOT NULL ,
+    `allergia` VARCHAR(512) NULL ,
+    `etelerzekenyseg` VARCHAR(512) NULL ,
+    `egyeb` VARCHAR(512) NULL ,
+    `regisztracioDatuma` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+    PRIMARY KEY (`id`),
+    UNIQUE `unique_email` (`email`)) ENGINE = InnoDB;
+
+INSERT INTO `golyak` (`id`, `nev`, `email`, `szak`, `telefonszam`, `cim`, `nem`,
+    `oktatasiAzonosito`, `szuletesiDatum`, `szuletesiHely`, `poloMeret`,
+    `hetfo`, `kedd`, `szerda`, `csutortok`, `pentek`, `anyjaNeve`, `allergia`,
+    `etelerzekenyseg`, `egyeb`, `regisztracioDatuma`) VALUES (
+        NULL, 'Kiss Pista', 'kiss.pista@gmail.com', 'HR', '45235363',
+        '1111 Nagyvaros, Fő utca 25', '1', '563646364', '2020-04-05',
+        'Nagyváros', 'XL', '1', '1', '1', '1', '1',
+        'Kiss Istvánné', 'nincs', 'nincs', 'nincs', CURRENT_TIMESTAMP),
+    (
+        NULL, 'Nagy Lujza', 'nagy.lujza@gmail.com', 'Ginf', '5345902332',
+        '1112 Kisváros, Petőfi utca 13', '0', '543634634', '2020-04-20',
+        'Kisfalu', 'S', '1', '1', '1', '1', '0',
+        'Nagy Erzsébet', NULL, NULL, NULL, CURRENT_TIMESTAMP)
