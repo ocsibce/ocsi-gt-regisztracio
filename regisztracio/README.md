@@ -1,0 +1,1 @@
+# Közgáz Gólyatábor regisztráció
