@@ -34,7 +34,7 @@ const Result = (props: {sikeres: "sikeres" | "sikertelen" | "dupla" | null}) => 
 
     return (
         <>
-            {text}
+            {text()}
         </>
     );
 }

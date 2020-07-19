@@ -14,6 +14,7 @@ const DetailsContainer = styled.div`
 const DetailsList = styled.ul`
     width: 33%;
     list-style: none;
+    margin-top: 64px;
 `;
 
 const DetailsListHeader = styled.li`
@@ -47,12 +48,12 @@ const Details : React.FC = props => {
         ]
     });
 
-    const regisztracioMenete = details.regisztracioMenete.map(detail => {
-        return <DetailsListItem>{detail}</DetailsListItem>
+    const regisztracioMenete = details.regisztracioMenete.map((detail, idx) => {
+        return <DetailsListItem key={`menet-${idx}`}>{detail}</DetailsListItem>
     })
 
-    const fontosInformaciok = details.fontosInformaciok.map(detail => {
-        return <DetailsListItem>{detail}</DetailsListItem>
+    const fontosInformaciok = details.fontosInformaciok.map((detail, idx) => {
+        return <DetailsListItem key={`fontos-${idx}`}>{detail}</DetailsListItem>
     })
 
     return (

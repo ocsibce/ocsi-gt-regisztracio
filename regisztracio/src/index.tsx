@@ -3,14 +3,15 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
 import { InitialState } from './utils/types';
-import configureStore from './store';
+import configureStore from './State/store';
 
 export const initialState: InitialState = {
   preview: true,
-  time: "during"
+  time: "during",
+  result: null,
 }
+
 
 ReactDOM.render(
   <React.StrictMode>
@@ -20,5 +21,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-serviceWorker.unregister();

@@ -1,10 +1,11 @@
 import React from 'react';
-import PreviewBar from './PreviewBar';
+import PreviewBar from './Components/PreviewBar';
 import { useSelector } from 'react-redux';
 import { InitialState } from './utils/types';
-import Registration from './Registration/Registration';
-import Closed from './Closed';
-import Countdown from './Countdown';
+import Registration from './Components/Registration/Registration';
+import Closed from './Components/Closed';
+import Countdown from './Components/Countdown';
+import Hero from './Components/Hero';
 
 function App() {
 
@@ -27,7 +28,10 @@ function App() {
   return (
     <div>
       {showPreview ? <PreviewBar /> : <></>}
-      {mainView}
+      <main>
+        <Hero heroStyle={showView === "during" ? "big" : "small"} />
+        {mainView}
+      </main>
     </div>
   );
 }

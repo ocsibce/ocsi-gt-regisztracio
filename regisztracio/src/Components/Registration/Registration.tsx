@@ -1,28 +1,35 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import Hero from './Hero';
 import Details from './Details';
 import Form from './Form';
 import Result from './Result';
+import { useSelector } from 'react-redux';
+import { InitialState } from '../../utils/types';
 
 const Main = styled.div`
     margin: 0 5%;
     background-color: #FAE37D;
     text-align: center;
+    margin-bottom: 2314px;
 `;
 
 const Registration : React.FC = props => {
 
-    const [result, setResult] = useState(null);
+    const result = useSelector((state: InitialState) => state.result);
+
+    let mainPart;
+
+    if (!!result) {
+        mainPart = <Result sikeres={result}/>
+    } else {
+        mainPart = <Form />
+    }
 
     return (
         <Main>
-            <Hero />
-            <main>
                 <Details />
-                <Form />
-                {!!result ? <Result sikeres={result}/> : <></> }
-            </main>
+                <h1>Regisztráció</h1>
+                {mainPart}
         </Main>
     );
 }
