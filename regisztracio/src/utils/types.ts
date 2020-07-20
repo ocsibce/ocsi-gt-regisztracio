@@ -7,6 +7,8 @@ export type InitialState = {
     preview: Boolean,
     time: Time,
     result: Result,
+    startTime: Date,
+    endTime: Date,
 }
 
 export type RegisztracioAdat = {

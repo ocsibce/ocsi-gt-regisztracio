@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import PreviewBar from './Components/PreviewBar';
 import { useSelector } from 'react-redux';
 import { InitialState } from './utils/types';
@@ -6,6 +7,17 @@ import Registration from './Components/Registration/Registration';
 import Closed from './Components/Closed';
 import Countdown from './Components/Countdown';
 import Hero from './Components/Hero';
+import Footer from './Components/Footer';
+
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
+
+const Main = styled.main`
+  flex: 1 0 auto;
+`;
 
 function App() {
 
@@ -26,13 +38,14 @@ function App() {
   }
 
   return (
-    <div>
-      {showPreview ? <PreviewBar /> : <></>}
-      <main>
-        <Hero heroStyle={showView === "during" ? "big" : "small"} />
-        {mainView}
-      </main>
-    </div>
+    <AppContainer>
+      <Main>
+        {showPreview ? <PreviewBar /> : <></>}
+          <Hero heroStyle={showView === "during" ? "big" : "small"} />
+          {mainView}
+      </Main>
+      <Footer />
+    </AppContainer>
   );
 }
 
