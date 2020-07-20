@@ -8,6 +8,7 @@ const FormContainer = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-around;
+    margin-bottom: 32px;
 `;
 
 const FormCol = styled.div`
@@ -43,6 +44,17 @@ const DaysContainer = styled(BoxContainer)`
     justify-content: center;
     align-items: center;
     margin-top: 8px;
+
+    @media (max-width: 530px) {
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+`;
+
+const DayGroup = styled.div`
+    @media (max-width: 530px) {
+        margin-top: 8px;
+    }
 `;
 
 const Label = styled.label`
@@ -76,22 +88,23 @@ const Select = styled.select`
     min-width: 172px;
 `;
 
-// TODO Disabled button
-
 const Button = styled.button`
     box-shadow: 0px 0px 0px 2px #9fb4f2;
-	background:linear-gradient(to bottom, #7892c2 5%, #476e9e 100%);
-	background-color:#7892c2;
 	border-radius:10px;
-	border:1px solid #4e6096;
 	display:inline-block;
-	cursor:pointer;
 	color:#ffffff;
 	font-size:24px;
 	padding:12px 37px;
 	text-decoration:none;
     text-shadow:0px 1px 0px #283966;
-    margin-bottom: 24px;
+    margin: 24px 0;
+`;
+
+const ActiveButton = styled(Button)`
+    background:linear-gradient(to bottom, #7892c2 5%, #476e9e 100%);
+    background-color:#7892c2;
+    cursor:pointer;
+    border:1px solid #4e6096;
 
     &:hover {
         background:linear-gradient(to bottom, #476e9e 5%, #7892c2 100%);
@@ -104,8 +117,11 @@ const Button = styled.button`
     }
 `;
 
-const Form : React.FC = props => {
+const DisabledButton = styled(Button)`
+    background-color: #666;
+`;
 
+const Form : React.FC = props => {
 
     const [regAdat, setRegAdat] = useState<RegisztracioAdat>({
         nev: "",
@@ -358,6 +374,7 @@ const Form : React.FC = props => {
     const onSubmit = (event: Event) => {
         event.preventDefault();
         console.log(regAdat);
+        // TODO this
     }
 
     const validateForm = () => {
@@ -472,7 +489,7 @@ const Form : React.FC = props => {
                     <InputGroupDays>
                         <Label>Melyik napokra jössz?</Label>
                         <DaysContainer>
-                            <div>
+                            <DayGroup>
                                 <input
                                     type="checkbox"
                                     name="minden"
@@ -480,8 +497,8 @@ const Form : React.FC = props => {
                                     checked={isMindenChecked()}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkboxInput(e, "minden")} />
                                 <BoxLabel htmlFor="minden">Mindegyikre!</BoxLabel>
-                            </div>
-                            <div>
+                            </DayGroup>
+                            <DayGroup>
                                 <input
                                     type="checkbox"
                                     name="hetfo"
@@ -489,8 +506,8 @@ const Form : React.FC = props => {
                                     checked={regAdat.napok.hetfo}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkboxInput(e, "hetfo")} />
                                 <BoxLabel htmlFor="hetfo">Hétfő</BoxLabel>
-                            </div>
-                            <div>
+                            </DayGroup>
+                            <DayGroup>
                                 <input
                                     type="checkbox"
                                     name="kedd"
@@ -498,8 +515,8 @@ const Form : React.FC = props => {
                                     checked={regAdat.napok.kedd}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkboxInput(e, "kedd")} />
                                 <BoxLabel htmlFor="kedd">Kedd</BoxLabel>
-                            </div>
-                            <div>
+                            </DayGroup>
+                            <DayGroup>
                                 <input
                                     type="checkbox"
                                     name="szerda"
@@ -507,8 +524,8 @@ const Form : React.FC = props => {
                                     checked={regAdat.napok.szerda}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkboxInput(e, "szerda")} />
                                 <BoxLabel htmlFor="szerda">Szerda</BoxLabel>
-                            </div>
-                            <div>
+                            </DayGroup>
+                            <DayGroup>
                                 <input
                                     type="checkbox"
                                     name="csutortok"
@@ -516,8 +533,8 @@ const Form : React.FC = props => {
                                     checked={regAdat.napok.csutortok}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkboxInput(e, "csutortok")} />
                                 <BoxLabel htmlFor="csutortok">Csütörtök</BoxLabel>
-                            </div>
-                            <div>
+                            </DayGroup>
+                            <DayGroup>
                                 <input
                                     type="checkbox"
                                     name="pentek"
@@ -525,7 +542,7 @@ const Form : React.FC = props => {
                                     checked={regAdat.napok.pentek}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkboxInput(e, "pentek")} />
                                 <BoxLabel htmlFor="pentek">Péntek</BoxLabel>
-                            </div>
+                            </DayGroup>
                         </DaysContainer>
                     </InputGroupDays>
                     <InputGroup>
@@ -535,7 +552,12 @@ const Form : React.FC = props => {
                 </FormColLast>
             </FormContainer>
             <h4>Biztos itt lesz valami házirend meg adatkezelési szabályzat</h4>
-            <Button onClick={(event: any) => onSubmit(event as Event)} disabled={!isFormValid} >Regisztráció</Button>
+            {isFormValid ?
+                <ActiveButton onClick={(event: any) => onSubmit(event as Event)}>Regisztráció</ActiveButton>
+                :
+                <DisabledButton disabled>Regisztráció</DisabledButton>
+            }
+
         </form>
     );
 }

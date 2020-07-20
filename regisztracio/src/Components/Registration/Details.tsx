@@ -9,14 +9,24 @@ const DetailsContainer = styled.div`
     margin: 64px 0;
 
     display: flex;
-    flex-direction: row;
+    flex-flow: row wrap;
     justify-content: space-around;
+
+    @media (max-width: 420px) {
+        flex-direction: column;
+        justify-content: center;
+        margin: 0 0 64px 0;
+    }
 `;
 
 const DetailsList = styled.ul`
     width: 33%;
     list-style: none;
     margin-top: 64px;
+
+    @media (max-width: 420px) {
+        width: 90%;
+    }
 `;
 
 const DetailsListHeader = styled.li`

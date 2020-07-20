@@ -23,7 +23,7 @@ const HeroContainer = styled.div`
 `;
 
 const MainTitle = styled.h1`
-    font-size: 48px;
+    font-size: 32px;
     margin-bottom: 24px;
 `;
 

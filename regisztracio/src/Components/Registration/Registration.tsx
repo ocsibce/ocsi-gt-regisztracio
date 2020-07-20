@@ -10,7 +10,10 @@ const Main = styled.div`
     margin: 0 5%;
     background-color: #FAE37D;
     text-align: center;
-    margin-bottom: 2314px;
+
+    @media (max-width: 769px) {
+        margin: 0;
+    }
 `;
 
 const Registration : React.FC = props => {
