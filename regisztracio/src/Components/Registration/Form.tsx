@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { RegisztracioAdat } from '../../utils/types';
+import { RegisztracioAdat, InitialState } from '../../utils/types';
+import { useSelector } from 'react-redux';
 
 const FormContainer = styled.div`
     display: flex;
@@ -135,6 +136,12 @@ const Form : React.FC = props => {
     })
     const [isFormValid, setIsFormValid] = useState(false);
 
+    const szakok = useSelector((state: InitialState) => state.szakok);
+
+    const szakOptions = szakok!.map((szak) => {
+        return <option value={szak.id}>{szak.name}</option>
+    })
+
     useEffect(() => {
         validateForm();
     }, [regAdat])
@@ -149,7 +156,6 @@ const Form : React.FC = props => {
 
     const emailChange = (event: any) => {
         const email = event.target.value;
-        // TODO regex check
         setRegAdat({
             ...regAdat,
             email
@@ -157,7 +163,6 @@ const Form : React.FC = props => {
     }
 
     const telefonChange = (event: any) => {
-        // TODO regex
         const telefonszam = event.target.value;
         setRegAdat({
             ...regAdat,
@@ -377,8 +382,6 @@ const Form : React.FC = props => {
         setIsFormValid(true);
     }
 
-    console.log(isFormValid)
-
     return (
         <form>
             <FormContainer>
@@ -453,9 +456,7 @@ const Form : React.FC = props => {
                     <InputGroup>
                         <Label>Szak</Label>
                         <Select name="szak" id="szak" onChange={szakSelect} value={regAdat.szak} >
-                            <option value="ginf">Gazdinfo</option>
-                            <option value="hr">HR</option>
-                            <option value="tv">Turizmus</option>
+                            {szakOptions}
                         </Select>
                     </InputGroup>
                     <InputGroup>

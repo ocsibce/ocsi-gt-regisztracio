@@ -1,8 +1,16 @@
 import { Time, Action, Result } from "../utils/types";
 
+export const DATA_FROM_API = "data_from_api"
 export const PREVIEW_CHANGED = "preview_changed";
 export const TIME_CHANGED = "time_changed";
 export const RESULT_CHANGED = "result_changed"
+
+export function dataFromApi(data: any): Action {
+    return {
+        type: DATA_FROM_API,
+        payload: data
+    }
+}
 
 export function previewChanged(): Action {
     return {

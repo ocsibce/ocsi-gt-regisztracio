@@ -1,0 +1,24 @@
+{
+    "startTime": "2020-06-27T12:00:00",
+    "endTime": "2020-08-10T23:59:59",
+    "details": {
+        "regisztracioMenete": [
+            "Regisztrálj a lenti űrlapon",
+            "Egy pár nap múlva küldünk egy e-mailt",
+            "Fizesd be a tábor árát, az e-mailben kapott információk alapján",
+            "Hozd el magaddal a bizonylatot az utalásról a táborba",
+            "Gyere el és érezd jól magad"
+        ],
+        "fontosInformaciok": [
+            "A tábor ára 29.000 Forint",
+            "Az esemény kizárólag a Budapesti Corvinus Egyetem 2019. szeptemberében felvett NAPPALI munkarendű ALAPSZAKOS hallgatói számára van meghírdetve"
+        ]
+    },
+    "szakok": [
+        {"id": "ginf", "name": "Gazdaságinformatikus"},
+        {"id": "hr", "name": "Emberi erőforrások"},
+        {"id": "tuve", "name": "Turizmus és Vendéglátás"},
+        {"id": "komedia", "name": "Kommunikáció- és médiatudomány"},
+        {"id": "psz", "name": "Pénzügy és Számvitel"}
+    ]
+}

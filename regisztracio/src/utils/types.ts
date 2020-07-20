@@ -3,12 +3,25 @@ export type Action = {
     payload: any
 }
 
+type Details = {
+    regisztracioMenete: string[],
+    fontosInformaciok: string[],
+}
+
+type Szak = {
+    id: string,
+    name: string
+}
+
 export type InitialState = {
+    loading: Boolean
     preview: Boolean,
     time: Time,
     result: Result,
     startTime: Date,
     endTime: Date,
+    details: Details
+    szakok: Szak[] | null
 }
 
 export type RegisztracioAdat = {

@@ -29,52 +29,50 @@ const numberFormatter = (n: number): string => {
 
 const Countdown : React.FC = props => {
 
-    const startTime = useSelector((state: InitialState) => state.startTime);
+    const startTime = new Date(useSelector((state: InitialState) => state.startTime));
     const [countdownText, setCountdownText] = useState("")
 
 
     useEffect(() => {
         const interval = setInterval(() => {
-            let remainingTime = startTime.getTime() - Date.now()
-            let countdownArray = [];
-            if (remainingTime > EPOCH_TO_WEEKS) {
-                const weeks = Math.floor(remainingTime / EPOCH_TO_WEEKS)
-                countdownArray.push(`${weeks} hét`)
-                remainingTime -= weeks * EPOCH_TO_WEEKS;
-            }
+                let remainingTime = startTime.getTime() - Date.now()
+                let countdownArray = [];
+                if (remainingTime > EPOCH_TO_WEEKS) {
+                    const weeks = Math.floor(remainingTime / EPOCH_TO_WEEKS)
+                    countdownArray.push(`${weeks} hét`)
+                    remainingTime -= weeks * EPOCH_TO_WEEKS;
+                }
 
-            if (remainingTime > EPOCH_TO_DAYS) {
-                const days = Math.floor(remainingTime / EPOCH_TO_DAYS)
-                countdownArray.push(`${days} nap`)
-                remainingTime -= days * EPOCH_TO_DAYS;
-            }
+                if (remainingTime > EPOCH_TO_DAYS) {
+                    const days = Math.floor(remainingTime / EPOCH_TO_DAYS)
+                    countdownArray.push(`${days} nap`)
+                    remainingTime -= days * EPOCH_TO_DAYS;
+                }
 
-            if (remainingTime > EPOCH_TO_HOURS) {
-                const hours = Math.floor(remainingTime / EPOCH_TO_HOURS);
-                countdownArray.push(`${numberFormatter(hours)} óra`)
-                remainingTime -= hours * EPOCH_TO_HOURS;
-            } else {countdownArray.push(`00 óra`)}
+                if (remainingTime > EPOCH_TO_HOURS) {
+                    const hours = Math.floor(remainingTime / EPOCH_TO_HOURS);
+                    countdownArray.push(`${numberFormatter(hours)} óra`)
+                    remainingTime -= hours * EPOCH_TO_HOURS;
+                } else {countdownArray.push(`00 óra`)}
 
-            if (remainingTime > EPOCH_TO_MINUTES) {
-                const minutes = Math.floor(remainingTime / EPOCH_TO_MINUTES);
-                countdownArray.push(`${numberFormatter(minutes)} perc`)
-                remainingTime -= minutes * EPOCH_TO_MINUTES;
-            } else {countdownArray.push(`00 perc`)}
+                if (remainingTime > EPOCH_TO_MINUTES) {
+                    const minutes = Math.floor(remainingTime / EPOCH_TO_MINUTES);
+                    countdownArray.push(`${numberFormatter(minutes)} perc`)
+                    remainingTime -= minutes * EPOCH_TO_MINUTES;
+                } else {countdownArray.push(`00 perc`)}
 
-            if (remainingTime > EPOCH_TO_SECOND) {
-                const seconds = Math.floor(remainingTime / EPOCH_TO_SECOND);
-                countdownArray.push(`${numberFormatter(seconds)} másodperc`)
-                remainingTime -= seconds * EPOCH_TO_SECOND;
-            } else {countdownArray.push(`00 másodperc`)}
+                if (remainingTime > EPOCH_TO_SECOND) {
+                    const seconds = Math.floor(remainingTime / EPOCH_TO_SECOND);
+                    countdownArray.push(`${numberFormatter(seconds)} másodperc`)
+                    remainingTime -= seconds * EPOCH_TO_SECOND;
+                } else {countdownArray.push(`00 másodperc`)}
 
-            setCountdownText(countdownArray.join(' '));
+                setCountdownText(countdownArray.join(' '));
         }, 1000)
         return () => {
             clearInterval(interval);
         };
     }, []);
-
-
 
     return (
             <CountdownMainText>

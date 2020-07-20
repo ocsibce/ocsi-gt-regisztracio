@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import { InitialState } from '../../utils/types';
+import { useSelector } from 'react-redux';
 
 const DetailsContainer = styled.div`
     width: 100%;
@@ -34,19 +36,7 @@ const DetailsListItem = styled.li`
 
 const Details : React.FC = props => {
 
-    const [details, setDetails] = useState({
-        "regisztracioMenete": [
-            "Regisztrálj a lenti űrlapon",
-            "Egy pár nap múlva küldünk egy e-mailt",
-            "Fizesd be a tábor árát, az e-mailben kapott információk alapján",
-            "Hozd el magaddal a bizonylatot az utalásról a táborba",
-            "Gyere el és érezd jól magad"
-        ],
-        "fontosInformaciok": [
-            "A tábor ára 29.000 Forint",
-            "Az esemény kizárólag a Budapesti Corvinus Egyetem 2019. szeptemberében felvett NAPPALI munkarendű ALAPSZAKOS hallgatói számára van meghírdetve"
-        ]
-    });
+    const details = useSelector((state: InitialState) => state.details);
 
     const regisztracioMenete = details.regisztracioMenete.map((detail, idx) => {
         return <DetailsListItem key={`menet-${idx}`}>{detail}</DetailsListItem>
