@@ -10,20 +10,16 @@ export type GolyaAdat = {
     szuletesDatum: string;
     szuletesHely: string;
     poloMeret: string;
-    napok: Napok,
-    anyjaNeve: string;
-    allergia: string | null;
-    etelerzekeny: string | null;
-    egyeb: string | null;
-    regisztralt: number;
-}
-
-type Napok = {
     hetfo: boolean;
     kedd: boolean;
     szerda: boolean;
     csutortok: boolean;
     pentek: boolean;
+    anyjaNeve: string;
+    allergia: string | null;
+    etelerzekeny: string | null;
+    egyeb: string | null;
+    regisztralt: number;
 }
 
 export type Filter = {
