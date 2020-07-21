@@ -2,7 +2,6 @@
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
 
-    echo "Read";
     include_once '../config/database.php';
     include_once '../objects/golya.php';
 
