@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import Cover from '../facebook_cover.png';
 
 const Header = styled.header`
     width: 100%;
-    height: 20vh;
+    height: 40vh;
     background-color: #F9DC5C;
     color: #FFF;
     position: relative;
@@ -11,45 +12,22 @@ const Header = styled.header`
 `;
 
 const BigHeader = styled(Header)`
-    height: 40vh
+    height: 60vh
 `
 
-const HeroContainer = styled.div`
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+const HeroImg = styled.img`
+    max-width: 100%;
+    max-height: 100%;
 `;
 
-const MainTitle = styled.h1`
-    font-size: 32px;
-    margin-bottom: 24px;
-`;
-
-const BigTitle = styled(MainTitle)`
-    margin-bottom: 48px;
-`;
-
-const TitleSpan = styled.span`
-    display: block;
-`;
+// TODO: text in mobile view
 
 const Hero = (props: {heroStyle: "small" | "big"}) => {
 
-    const heroText = <>
-        <TitleSpan>Közgáz Gólyatábor </TitleSpan>
-        <TitleSpan>2020</TitleSpan>
-    </>
+    return props.heroStyle === "big" ?
+        <BigHeader> <HeroImg src={Cover} /> </BigHeader> :
+        <Header> <HeroImg src={Cover} /> </Header>
 
-    const heroTitle = props.heroStyle === "big" ? <BigTitle> {heroText} </BigTitle> : <MainTitle> {heroText} </MainTitle>;
-
-    const heroHeader = props.heroStyle === "big" ?
-        <BigHeader> <HeroContainer> {heroTitle} </HeroContainer> </BigHeader> :
-        <Header> <HeroContainer> {heroTitle} </HeroContainer> </Header>
-
-
-    return heroHeader;
 }
 
 export default Hero;

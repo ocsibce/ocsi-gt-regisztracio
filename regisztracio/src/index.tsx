@@ -7,7 +7,7 @@ import { InitialState } from './utils/types';
 import configureStore from './State/store';
 
 export const initialState: InitialState = {
-  preview: false,
+  preview: true,
   time: "during",
   result: null,
   startTime: new Date("2020-07-27T12:00:00"),

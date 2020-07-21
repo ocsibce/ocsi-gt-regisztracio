@@ -1,7 +1,7 @@
 import { InitialState, Action } from '../utils/types';
 import { Reducer } from 'redux';
 import { initialState } from '..';
-import { PREVIEW_CHANGED, TIME_CHANGED, RESULT_CHANGED, DATA_FROM_API } from './actions';
+import { PREVIEW_CHANGED, TIME_CHANGED, RESULT_CHANGED, DATA_FROM_API, REQUEST_SENT } from './actions';
 
 const reducer: Reducer<InitialState, any> = (
     state: InitialState | undefined = initialState,
@@ -31,8 +31,14 @@ const reducer: Reducer<InitialState, any> = (
         case RESULT_CHANGED:
             return {
                 ...state,
-                result: action.payload
+                result: action.payload,
+                loading: false
             }
+        case REQUEST_SENT:
+            return {
+                ...state,
+                loading: true
+            };
         default:
             return state;
     }

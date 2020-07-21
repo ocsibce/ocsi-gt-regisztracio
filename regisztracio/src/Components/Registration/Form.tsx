@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
+import axios, { AxiosResponse, AxiosError } from 'axios';
 import { RegisztracioAdat, InitialState } from '../../utils/types';
-import { useSelector } from 'react-redux';
+import { requestSent, resultChanged } from '../../State/actions';
 
 const FormContainer = styled.div`
     display: flex;
@@ -134,7 +136,7 @@ const Form : React.FC = props => {
         },
         nem: null,
         oktazonosito: null,
-        szulDatum: "",
+        szulDatum: "2000-01-01",
         szulHely: "",
         anyjaNeve: "",
         allergia: "",
@@ -153,9 +155,10 @@ const Form : React.FC = props => {
     const [isFormValid, setIsFormValid] = useState(false);
 
     const szakok = useSelector((state: InitialState) => state.szakok);
+    const dispatch = useDispatch();
 
     const szakOptions = szakok!.map((szak) => {
-        return <option value={szak.id}>{szak.name}</option>
+        return <option key={szak.name} value={szak.id}>{szak.name}</option>
     })
 
     useEffect(() => {
@@ -373,8 +376,63 @@ const Form : React.FC = props => {
 
     const onSubmit = (event: Event) => {
         event.preventDefault();
-        console.log(regAdat);
-        // TODO this
+        const golyaAdat = {
+            nev: regAdat.nev,
+            email: regAdat.email,
+            szak: regAdat.szak,
+            telefonszam: regAdat.telefonszam,
+            cim: `${regAdat.lakcim.irszam} ${regAdat.lakcim.varos} ${regAdat.lakcim.utca}`,
+            nem: regAdat.nem,
+            oktatasiAzonosito: regAdat.oktazonosito,
+            szuletesiDatum: regAdat.szulDatum,
+            szuletesiHely: regAdat.szulHely,
+            poloMeret: regAdat.polo,
+            hetfo: regAdat.napok.hetfo,
+            kedd: regAdat.napok.kedd,
+            szerda: regAdat.napok.szerda,
+            csutortok: regAdat.napok.csutortok,
+            pentek: regAdat.napok.pentek,
+            anyjaNeve: regAdat.anyjaNeve,
+            allergia: regAdat.allergia,
+            etelerzekenyseg: regAdat.etelerzekeny,
+            egyeb: regAdat.egyeb
+        };
+
+        axios('http://teszt.api.bceocsi.com/golya/create.php', {
+            method: 'post',
+            data: golyaAdat,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+            },
+            withCredentials: true
+        }).then((response: AxiosResponse) => {
+            switch(response.status) {
+                case 201:
+                    dispatch(resultChanged("sikeres"))
+                    break;
+                case 403:
+                    dispatch(resultChanged("dupla"))
+                    break;
+                case 400:
+                case 503:
+                default:
+                    dispatch(resultChanged("sikertelen"))
+                    break;
+            }
+        }).catch((error: AxiosError) => {
+            switch(error.response!.status) {
+                case 403:
+                    dispatch(resultChanged("dupla"))
+                    break;
+                case 400:
+                case 503:
+                default:
+                    dispatch(resultChanged("sikertelen"))
+                    break;
+            }
+        });
+        dispatch(requestSent());
     }
 
     const validateForm = () => {
@@ -392,7 +450,7 @@ const Form : React.FC = props => {
             setIsFormValid(false);
             return;
         }
-        if(regAdat.lakcim.irszam < 1000 || regAdat.lakcim.varos === "" || regAdat.lakcim.utca === "" || regAdat.szulDatum === "" || regAdat.szulHely === "" || regAdat.anyjaNeve === "") {
+        if(regAdat.lakcim.irszam < 1000 || regAdat.lakcim.varos === "" || regAdat.lakcim.utca === "" || regAdat.szulDatum === "" || regAdat.szulHely === "" || regAdat.anyjaNeve === "" || regAdat.szak === "" || regAdat.polo === "") {
             setIsFormValid(false);
             return;
         }
@@ -450,7 +508,7 @@ const Form : React.FC = props => {
                     </InputGroup>
                     <InputGroup>
                         <Label htmlFor="szulDate">Születési dátum</Label>
-                        <Input type="date" name="szulDate" id="szulDate" onChange={szulDatumChange} />
+                        <Input type="date" name="szulDate" id="szulDate" onChange={szulDatumChange} value={regAdat.szulDatum} />
                     </InputGroup>
                     <InputGroup>
                         <Label htmlFor="szulHely">Születési hely</Label>
@@ -473,17 +531,17 @@ const Form : React.FC = props => {
                     <InputGroup>
                         <Label>Szak</Label>
                         <Select name="szak" id="szak" onChange={szakSelect} value={regAdat.szak} >
+                            <option value="" disabled>Kérlek válasz</option>
                             {szakOptions}
                         </Select>
                     </InputGroup>
                     <InputGroup>
                         <Label>Póló méret</Label>
                         <Select name="polo" id="polo" onChange={poloSelect} value={regAdat.polo}>
-                            <option value="xs">XS</option>
+                            <option value="" disabled>Kérlek válasz</option>
                             <option value="s">S</option>
                             <option value="m">M</option>
                             <option value="l">L</option>
-                            <option value="xl">XL</option>
                         </Select>
                     </InputGroup>
                     <InputGroupDays>
@@ -551,7 +609,7 @@ const Form : React.FC = props => {
                     </InputGroup>
                 </FormColLast>
             </FormContainer>
-            <h4>Biztos itt lesz valami házirend meg adatkezelési szabályzat</h4>
+            <h4>A regisztrációval kijelentem, hogy a <a href="#">házirendet</a> és az <a href="#">adatkezelési nyilatkozatot</a> elolvastam és elfogadom.</h4>
             {isFormValid ?
                 <ActiveButton onClick={(event: any) => onSubmit(event as Event)}>Regisztráció</ActiveButton>
                 :
