@@ -1,4 +1,5 @@
 import React from 'react';
+import i18n from 'i18next';
 
 const Result = (props: {sikeres: "sikeres" | "sikertelen" | "dupla" | null}) => {
 
@@ -7,22 +8,22 @@ const Result = (props: {sikeres: "sikeres" | "sikertelen" | "dupla" | null}) => 
             case "sikeres":
                 return (
                     <>
-                        <h1>Gratulálunk</h1>
-                        <h2>A regisztráció sikeres volt</h2>
+                        <h1> {i18n.t`congratulations`} </h1>
+                        <h2> {i18n.t`success`} </h2>
                     </>
                 )
             case "sikertelen":
                 return (
                     <>
-                        <h1>Sajnos nem sikerült regisztrálni</h1>
-                        <h2>Próbáld meg kicsit később</h2>
+                        <h1> {i18n.t`unfortunately`} </h1>
+                        <h2> {i18n.t`try_later`} </h2>
                     </>
                 )
             case "dupla":
                 return (
                     <>
-                        <h1>Sajnos nem sikerült regisztrálni</h1>
-                        <h2>Ezekkel az adatokkal már regisztráltak</h2>
+                        <h1> {i18n.t`unfortunately`} </h1>
+                        <h2> {i18n.t`duplicate`} </h2>
                     </>
                 )
             case null:

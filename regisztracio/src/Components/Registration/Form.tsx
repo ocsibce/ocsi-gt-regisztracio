@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { RegisztracioAdat, InitialState } from '../../utils/types';
 import { requestSent, resultChanged } from '../../State/actions';
+import i18n from 'i18next';
 
 const FormContainer = styled.div`
     display: flex;
@@ -463,89 +464,101 @@ const Form : React.FC = props => {
                 <FormCol>
                     {/* Contact info */}
                     <InputGroup>
-                        <Label htmlFor="nev">Név</Label>
+                        <Label htmlFor="nev">{i18n.t`name`}</Label>
                         <Input type="text" name="nev" id="nev" value={regAdat.nev} onChange={nevChange} />
                     </InputGroup>
                     <InputGroup>
-                        <Label htmlFor="email">E-mail</Label>
+                        <Label htmlFor="email">{i18n.t`email`}</Label>
                         <Input type="email" name="email" id="email" value={regAdat.email} onChange={emailChange} />
                     </InputGroup>
                     <InputGroup>
-                        <Label htmlFor="telefonszam">Telefonszám</Label>
+                        <Label htmlFor="telefonszam">{i18n.t`phone_number`}</Label>
                         <Input type="text" name="telefonszam" id="telefonszam" value={regAdat.telefonszam} onChange={telefonChange} />
                     </InputGroup>
                     {/* Address */}
-                    <FormHeader>Lakcím</FormHeader>
+                    <FormHeader>{i18n.t`address`}</FormHeader>
                     <InputGroup>
-                        <Label htmlFor="irszam">Irányítószám</Label>
+                        <Label htmlFor="irszam">{i18n.t`post_code`}</Label>
                         <Input type="number" name="irszam" id="irszam" value={regAdat.lakcim.irszam || 0} onChange={irszamChange} />
                     </InputGroup>
                     <InputGroup>
-                        <Label htmlFor="varos">Város</Label>
+                        <Label htmlFor="varos">{i18n.t`city`}</Label>
                         <Input type="text" name="varos" id="varos" value={regAdat.lakcim.varos} onChange={varosChange} />
                     </InputGroup>
                     <InputGroup>
-                        <Label htmlFor="utca">Utca</Label>
+                        <Label htmlFor="utca">{i18n.t`street`}</Label>
                         <Input type="text" name="utca" id="utca" value={regAdat.lakcim.utca} onChange={utcaChange} />
                     </InputGroup>
                 </FormCol>
                 <FormCol>
                     {/* Personal */}
                     <InputGroup>
-                        <Label>Nem</Label>
+                        <Label>{i18n.t`gender`}</Label>
                         <BoxContainer>
                             <div>
-                                <input type="radio" name="nem" id="ferfi" checked={!!regAdat.nem} onChange={() => nemChange(true)} /> <BoxLabel htmlFor="ferfi">Férfi</BoxLabel>
+                                <input
+                                    type="radio"
+                                    name="nem"
+                                    id="ferfi"
+                                    checked={!!regAdat.nem}
+                                    onChange={() => nemChange(true)} />
+                                    <BoxLabel htmlFor="ferfi">{i18n.t`male`}</BoxLabel>
                             </div>
                             <div>
-                                <input type="radio" name="nem" id="no" checked={regAdat.nem === false} onChange={() => nemChange(false)} /> <BoxLabel htmlFor="no">Nő</BoxLabel>
+                                <input
+                                    type="radio"
+                                    name="nem"
+                                    id="no"
+                                    checked={regAdat.nem === false}
+                                    onChange={() => nemChange(false)} />
+                                    <BoxLabel htmlFor="no">{i18n.t`female`}</BoxLabel>
                             </div>
                         </BoxContainer>
                     </InputGroup>
                     <InputGroup>
-                        <Label htmlFor="">Oktatási azonosító</Label>
+                        <Label htmlFor="oktAz">{i18n.t`student_id`}</Label>
                         <Input type="number" name="oktAz" id="oktAz" value={regAdat.oktazonosito || 0} onChange={oktAzChange} />
                     </InputGroup>
                     <InputGroup>
-                        <Label htmlFor="szulDate">Születési dátum</Label>
+                        <Label htmlFor="szulDate">{i18n.t`birth_date`}</Label>
                         <Input type="date" name="szulDate" id="szulDate" onChange={szulDatumChange} value={regAdat.szulDatum} />
                     </InputGroup>
                     <InputGroup>
-                        <Label htmlFor="szulHely">Születési hely</Label>
+                        <Label htmlFor="szulHely">{i18n.t`birth_place`}</Label>
                         <Input type="text" name="szulHely" id="szulHely" value={regAdat.szulHely} onChange={szulHelyChange} />
                     </InputGroup>
                     <InputGroup>
-                        <Label htmlFor="anyjaNeve">Anyja neve</Label>
+                        <Label htmlFor="anyjaNeve">{i18n.t`mother_name`}</Label>
                         <Input type="text" name="anyjaNeve" id="anyjaNeve" value={regAdat.anyjaNeve} onChange={anyjaNeveChange} />
                     </InputGroup>
                     <InputGroup>
-                        <Label htmlFor="allergia">Allergia</Label>
+                        <Label htmlFor="allergia">{i18n.t`allergies`}</Label>
                         <Input type="text" name="allergia" id="allergia" value={regAdat.allergia} onChange={allergiaChange} />
                     </InputGroup>
                     <InputGroup>
-                        <Label htmlFor="etelerzekenyseg">Ételérzékenység</Label>
+                        <Label htmlFor="etelerzekenyseg">{i18n.t`food_sensitivities`}</Label>
                         <Input type="text" name="etelerzekenyseg" id="etelerzekenyseg" value={regAdat.etelerzekeny} onChange={etelChange} />
                     </InputGroup>
                 </FormCol>
                 <FormColLast>
                     <InputGroup>
-                        <Label>Szak</Label>
+                        <Label>{i18n.t`major`}</Label>
                         <Select name="szak" id="szak" onChange={szakSelect} value={regAdat.szak} >
-                            <option value="" disabled>Kérlek válasz</option>
+                            <option value="" disabled>{i18n.t`please_select`}</option>
                             {szakOptions}
                         </Select>
                     </InputGroup>
                     <InputGroup>
-                        <Label>Póló méret</Label>
+                        <Label>{i18n.t`tshirt_size`}</Label>
                         <Select name="polo" id="polo" onChange={poloSelect} value={regAdat.polo}>
-                            <option value="" disabled>Kérlek válasz</option>
+                            <option value="" disabled>{i18n.t`please_select`}</option>
                             <option value="s">S</option>
                             <option value="m">M</option>
                             <option value="l">L</option>
                         </Select>
                     </InputGroup>
                     <InputGroupDays>
-                        <Label>Melyik napokra jössz?</Label>
+                        <Label>{i18n.t`days_select`}</Label>
                         <DaysContainer>
                             <DayGroup>
                                 <input
@@ -554,7 +567,7 @@ const Form : React.FC = props => {
                                     id="minden"
                                     checked={isMindenChecked()}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkboxInput(e, "minden")} />
-                                <BoxLabel htmlFor="minden">Mindegyikre!</BoxLabel>
+                                <BoxLabel htmlFor="minden">{i18n.t`all`}</BoxLabel>
                             </DayGroup>
                             <DayGroup>
                                 <input
@@ -563,7 +576,7 @@ const Form : React.FC = props => {
                                     id="hetfo"
                                     checked={regAdat.napok.hetfo}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkboxInput(e, "hetfo")} />
-                                <BoxLabel htmlFor="hetfo">Hétfő</BoxLabel>
+                                <BoxLabel htmlFor="hetfo">{i18n.t`monday`}</BoxLabel>
                             </DayGroup>
                             <DayGroup>
                                 <input
@@ -572,7 +585,7 @@ const Form : React.FC = props => {
                                     id="kedd"
                                     checked={regAdat.napok.kedd}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkboxInput(e, "kedd")} />
-                                <BoxLabel htmlFor="kedd">Kedd</BoxLabel>
+                                <BoxLabel htmlFor="kedd">{i18n.t`tuesday`}</BoxLabel>
                             </DayGroup>
                             <DayGroup>
                                 <input
@@ -581,7 +594,7 @@ const Form : React.FC = props => {
                                     id="szerda"
                                     checked={regAdat.napok.szerda}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkboxInput(e, "szerda")} />
-                                <BoxLabel htmlFor="szerda">Szerda</BoxLabel>
+                                <BoxLabel htmlFor="szerda">{i18n.t`wednesday`}</BoxLabel>
                             </DayGroup>
                             <DayGroup>
                                 <input
@@ -590,7 +603,7 @@ const Form : React.FC = props => {
                                     id="csutortok"
                                     checked={regAdat.napok.csutortok}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkboxInput(e, "csutortok")} />
-                                <BoxLabel htmlFor="csutortok">Csütörtök</BoxLabel>
+                                <BoxLabel htmlFor="csutortok">{i18n.t`thursday`}</BoxLabel>
                             </DayGroup>
                             <DayGroup>
                                 <input
@@ -599,23 +612,37 @@ const Form : React.FC = props => {
                                     id="pentek"
                                     checked={regAdat.napok.pentek}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkboxInput(e, "pentek")} />
-                                <BoxLabel htmlFor="pentek">Péntek</BoxLabel>
+                                <BoxLabel htmlFor="pentek">{i18n.t`friday`}</BoxLabel>
                             </DayGroup>
                         </DaysContainer>
                     </InputGroupDays>
                     <InputGroup>
-                        <Label>Egyéb üzenet</Label>
+                        <Label>{i18n.t`other`}</Label>
                         <Input type="text" name="egyeb" id="egyeb" value={regAdat.egyeb} onChange={egyebChanged} />
+                    </InputGroup>
+                    <InputGroup>
+                        <input
+                            type="checkbox"
+                            name="regulations"
+                            id="regulations"
+                            checked={false}
+                            onChange={() => {console.log('regulations')}} />
+                        <BoxLabel htmlFor="regulations">{i18n.t`agree`} {i18n.t`regulations`} </BoxLabel>
+                        <input
+                            type="checkbox"
+                            name="privacy policy"
+                            id="privacy policy"
+                            checked={false}
+                            onChange={() => {console.log('privacy policy')}} />
+                        <BoxLabel htmlFor="privacy policy">{i18n.t`agree`} {i18n.t`privacy_policy`} </BoxLabel>
                     </InputGroup>
                 </FormColLast>
             </FormContainer>
-            <h4>A regisztrációval kijelentem, hogy a <a href="#">házirendet</a> és az <a href="#">adatkezelési nyilatkozatot</a> elolvastam és elfogadom.</h4>
             {isFormValid ?
-                <ActiveButton onClick={(event: any) => onSubmit(event as Event)}>Regisztráció</ActiveButton>
+                <ActiveButton onClick={(event: any) => onSubmit(event as Event)}>{i18n.t`registration`}</ActiveButton>
                 :
-                <DisabledButton disabled>Regisztráció</DisabledButton>
+                <DisabledButton disabled>{i18n.t`registration`}</DisabledButton>
             }
-
         </form>
     );
 }

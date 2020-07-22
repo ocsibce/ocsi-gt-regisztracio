@@ -5,6 +5,7 @@ import Form from './Form';
 import Result from './Result';
 import { useSelector } from 'react-redux';
 import { InitialState } from '../../utils/types';
+import i18n from 'i18next';
 
 const Main = styled.div`
     margin: 0 5%;
@@ -31,7 +32,7 @@ const Registration : React.FC = props => {
     return (
         <Main>
                 <Details />
-                <h1>Regisztráció</h1>
+                <h1>{i18n.t`registration`}</h1>
                 {mainPart}
         </Main>
     );

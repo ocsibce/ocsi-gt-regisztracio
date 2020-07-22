@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { InitialState } from '../../utils/types';
 import { useSelector } from 'react-redux';
+import i18n from 'i18next';
 
 const DetailsContainer = styled.div`
     width: 100%;
@@ -60,13 +61,13 @@ const Details : React.FC = props => {
         <DetailsContainer>
             <DetailsList>
                 <DetailsListHeader>
-                    Regisztráció menete
+                    {i18n.t`how_to_register`}
                 </DetailsListHeader>
                 {regisztracioMenete}
             </DetailsList>
             <DetailsList>
                 <DetailsListHeader>
-                    Fontos információk
+                    {i18n.t`important_information`}
                 </DetailsListHeader>
                 {fontosInformaciok}
             </DetailsList>
