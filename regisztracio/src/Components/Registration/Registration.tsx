@@ -5,7 +5,7 @@ import Form from './Form';
 import Result from './Result';
 import { useSelector } from 'react-redux';
 import { InitialState } from '../../utils/types';
-import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 const Main = styled.div`
     margin: 0 5%;
@@ -20,6 +20,7 @@ const Main = styled.div`
 const Registration : React.FC = props => {
 
     const result = useSelector((state: InitialState) => state.result);
+    const [t] = useTranslation();
 
     let mainPart;
 
@@ -32,7 +33,7 @@ const Registration : React.FC = props => {
     return (
         <Main>
                 <Details />
-                <h1>{i18n.t`registration`}</h1>
+                <h1>{t`registration`}</h1>
                 {mainPart}
         </Main>
     );

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import axios, { AxiosResponse, AxiosError } from 'axios';
-import { RegisztracioAdat, InitialState } from '../../utils/types';
+import { RegisztracioAdat, InitialState, Szak } from '../../utils/types';
 import { requestSent, resultChanged } from '../../State/actions';
-import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 const FormContainer = styled.div`
     display: flex;
@@ -124,6 +124,12 @@ const DisabledButton = styled(Button)`
     background-color: #666;
 `;
 
+const getSzakOptions = (szakArray: Szak[]) => {
+    return szakArray.map((szak) => {
+        return <option key={szak.name} value={szak.id} disabled={szak.full} >{szak.name} {szak.full ? " - Betelt" : ""} </option>
+    })
+}
+
 const Form : React.FC = props => {
 
     const [regAdat, setRegAdat] = useState<RegisztracioAdat>({
@@ -155,12 +161,12 @@ const Form : React.FC = props => {
     })
     const [isFormValid, setIsFormValid] = useState(false);
 
-    const szakok = useSelector((state: InitialState) => state.szakok);
+    const {szakok, szakokEn, language} = useSelector((state: InitialState) => state);
     const dispatch = useDispatch();
 
-    const szakOptions = szakok!.map((szak) => {
-        return <option key={szak.name} value={szak.id}>{szak.name}</option>
-    })
+    const [t] = useTranslation();
+
+    const szakOptions = language === 'hu' ? getSzakOptions(szakok!)  : getSzakOptions(szakokEn!);
 
     useEffect(() => {
         validateForm();
@@ -464,36 +470,36 @@ const Form : React.FC = props => {
                 <FormCol>
                     {/* Contact info */}
                     <InputGroup>
-                        <Label htmlFor="nev">{i18n.t`name`}</Label>
+                        <Label htmlFor="nev">{t`name`}</Label>
                         <Input type="text" name="nev" id="nev" value={regAdat.nev} onChange={nevChange} />
                     </InputGroup>
                     <InputGroup>
-                        <Label htmlFor="email">{i18n.t`email`}</Label>
+                        <Label htmlFor="email">{t`email`}</Label>
                         <Input type="email" name="email" id="email" value={regAdat.email} onChange={emailChange} />
                     </InputGroup>
                     <InputGroup>
-                        <Label htmlFor="telefonszam">{i18n.t`phone_number`}</Label>
+                        <Label htmlFor="telefonszam">{t`phone_number`}</Label>
                         <Input type="text" name="telefonszam" id="telefonszam" value={regAdat.telefonszam} onChange={telefonChange} />
                     </InputGroup>
                     {/* Address */}
-                    <FormHeader>{i18n.t`address`}</FormHeader>
+                    <FormHeader>{t`address`}</FormHeader>
                     <InputGroup>
-                        <Label htmlFor="irszam">{i18n.t`post_code`}</Label>
+                        <Label htmlFor="irszam">{t`post_code`}</Label>
                         <Input type="number" name="irszam" id="irszam" value={regAdat.lakcim.irszam || 0} onChange={irszamChange} />
                     </InputGroup>
                     <InputGroup>
-                        <Label htmlFor="varos">{i18n.t`city`}</Label>
+                        <Label htmlFor="varos">{t`city`}</Label>
                         <Input type="text" name="varos" id="varos" value={regAdat.lakcim.varos} onChange={varosChange} />
                     </InputGroup>
                     <InputGroup>
-                        <Label htmlFor="utca">{i18n.t`street`}</Label>
+                        <Label htmlFor="utca">{t`street`}</Label>
                         <Input type="text" name="utca" id="utca" value={regAdat.lakcim.utca} onChange={utcaChange} />
                     </InputGroup>
                 </FormCol>
                 <FormCol>
                     {/* Personal */}
                     <InputGroup>
-                        <Label>{i18n.t`gender`}</Label>
+                        <Label>{t`gender`}</Label>
                         <BoxContainer>
                             <div>
                                 <input
@@ -502,7 +508,7 @@ const Form : React.FC = props => {
                                     id="ferfi"
                                     checked={!!regAdat.nem}
                                     onChange={() => nemChange(true)} />
-                                    <BoxLabel htmlFor="ferfi">{i18n.t`male`}</BoxLabel>
+                                    <BoxLabel htmlFor="ferfi">{t`male`}</BoxLabel>
                             </div>
                             <div>
                                 <input
@@ -511,54 +517,54 @@ const Form : React.FC = props => {
                                     id="no"
                                     checked={regAdat.nem === false}
                                     onChange={() => nemChange(false)} />
-                                    <BoxLabel htmlFor="no">{i18n.t`female`}</BoxLabel>
+                                    <BoxLabel htmlFor="no">{t`female`}</BoxLabel>
                             </div>
                         </BoxContainer>
                     </InputGroup>
                     <InputGroup>
-                        <Label htmlFor="oktAz">{i18n.t`student_id`}</Label>
+                        <Label htmlFor="oktAz">{t`student_id`}</Label>
                         <Input type="number" name="oktAz" id="oktAz" value={regAdat.oktazonosito || 0} onChange={oktAzChange} />
                     </InputGroup>
                     <InputGroup>
-                        <Label htmlFor="szulDate">{i18n.t`birth_date`}</Label>
+                        <Label htmlFor="szulDate">{t`birth_date`}</Label>
                         <Input type="date" name="szulDate" id="szulDate" onChange={szulDatumChange} value={regAdat.szulDatum} />
                     </InputGroup>
                     <InputGroup>
-                        <Label htmlFor="szulHely">{i18n.t`birth_place`}</Label>
+                        <Label htmlFor="szulHely">{t`birth_place`}</Label>
                         <Input type="text" name="szulHely" id="szulHely" value={regAdat.szulHely} onChange={szulHelyChange} />
                     </InputGroup>
                     <InputGroup>
-                        <Label htmlFor="anyjaNeve">{i18n.t`mother_name`}</Label>
+                        <Label htmlFor="anyjaNeve">{t`mother_name`}</Label>
                         <Input type="text" name="anyjaNeve" id="anyjaNeve" value={regAdat.anyjaNeve} onChange={anyjaNeveChange} />
                     </InputGroup>
                     <InputGroup>
-                        <Label htmlFor="allergia">{i18n.t`allergies`}</Label>
+                        <Label htmlFor="allergia">{t`allergies`}</Label>
                         <Input type="text" name="allergia" id="allergia" value={regAdat.allergia} onChange={allergiaChange} />
                     </InputGroup>
                     <InputGroup>
-                        <Label htmlFor="etelerzekenyseg">{i18n.t`food_sensitivities`}</Label>
+                        <Label htmlFor="etelerzekenyseg">{t`food_sensitivities`}</Label>
                         <Input type="text" name="etelerzekenyseg" id="etelerzekenyseg" value={regAdat.etelerzekeny} onChange={etelChange} />
                     </InputGroup>
                 </FormCol>
                 <FormColLast>
                     <InputGroup>
-                        <Label>{i18n.t`major`}</Label>
+                        <Label>{t`major`}</Label>
                         <Select name="szak" id="szak" onChange={szakSelect} value={regAdat.szak} >
-                            <option value="" disabled>{i18n.t`please_select`}</option>
+                            <option value="" disabled>{t`please_select`}</option>
                             {szakOptions}
                         </Select>
                     </InputGroup>
                     <InputGroup>
-                        <Label>{i18n.t`tshirt_size`}</Label>
+                        <Label>{t`tshirt_size`}</Label>
                         <Select name="polo" id="polo" onChange={poloSelect} value={regAdat.polo}>
-                            <option value="" disabled>{i18n.t`please_select`}</option>
+                            <option value="" disabled>{t`please_select`}</option>
                             <option value="s">S</option>
                             <option value="m">M</option>
                             <option value="l">L</option>
                         </Select>
                     </InputGroup>
                     <InputGroupDays>
-                        <Label>{i18n.t`days_select`}</Label>
+                        <Label>{t`days_select`}</Label>
                         <DaysContainer>
                             <DayGroup>
                                 <input
@@ -567,7 +573,7 @@ const Form : React.FC = props => {
                                     id="minden"
                                     checked={isMindenChecked()}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkboxInput(e, "minden")} />
-                                <BoxLabel htmlFor="minden">{i18n.t`all`}</BoxLabel>
+                                <BoxLabel htmlFor="minden">{t`all`}</BoxLabel>
                             </DayGroup>
                             <DayGroup>
                                 <input
@@ -576,7 +582,7 @@ const Form : React.FC = props => {
                                     id="hetfo"
                                     checked={regAdat.napok.hetfo}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkboxInput(e, "hetfo")} />
-                                <BoxLabel htmlFor="hetfo">{i18n.t`monday`}</BoxLabel>
+                                <BoxLabel htmlFor="hetfo">{t`monday`}</BoxLabel>
                             </DayGroup>
                             <DayGroup>
                                 <input
@@ -585,7 +591,7 @@ const Form : React.FC = props => {
                                     id="kedd"
                                     checked={regAdat.napok.kedd}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkboxInput(e, "kedd")} />
-                                <BoxLabel htmlFor="kedd">{i18n.t`tuesday`}</BoxLabel>
+                                <BoxLabel htmlFor="kedd">{t`tuesday`}</BoxLabel>
                             </DayGroup>
                             <DayGroup>
                                 <input
@@ -594,7 +600,7 @@ const Form : React.FC = props => {
                                     id="szerda"
                                     checked={regAdat.napok.szerda}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkboxInput(e, "szerda")} />
-                                <BoxLabel htmlFor="szerda">{i18n.t`wednesday`}</BoxLabel>
+                                <BoxLabel htmlFor="szerda">{t`wednesday`}</BoxLabel>
                             </DayGroup>
                             <DayGroup>
                                 <input
@@ -603,7 +609,7 @@ const Form : React.FC = props => {
                                     id="csutortok"
                                     checked={regAdat.napok.csutortok}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkboxInput(e, "csutortok")} />
-                                <BoxLabel htmlFor="csutortok">{i18n.t`thursday`}</BoxLabel>
+                                <BoxLabel htmlFor="csutortok">{t`thursday`}</BoxLabel>
                             </DayGroup>
                             <DayGroup>
                                 <input
@@ -612,12 +618,12 @@ const Form : React.FC = props => {
                                     id="pentek"
                                     checked={regAdat.napok.pentek}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkboxInput(e, "pentek")} />
-                                <BoxLabel htmlFor="pentek">{i18n.t`friday`}</BoxLabel>
+                                <BoxLabel htmlFor="pentek">{t`friday`}</BoxLabel>
                             </DayGroup>
                         </DaysContainer>
                     </InputGroupDays>
                     <InputGroup>
-                        <Label>{i18n.t`other`}</Label>
+                        <Label>{t`other`}</Label>
                         <Input type="text" name="egyeb" id="egyeb" value={regAdat.egyeb} onChange={egyebChanged} />
                     </InputGroup>
                     <InputGroup>
@@ -627,21 +633,21 @@ const Form : React.FC = props => {
                             id="regulations"
                             checked={false}
                             onChange={() => {console.log('regulations')}} />
-                        <BoxLabel htmlFor="regulations">{i18n.t`agree`} {i18n.t`regulations`} </BoxLabel>
+                        <BoxLabel htmlFor="regulations">{t`agree`} {t`regulations`} </BoxLabel>
                         <input
                             type="checkbox"
                             name="privacy policy"
                             id="privacy policy"
                             checked={false}
                             onChange={() => {console.log('privacy policy')}} />
-                        <BoxLabel htmlFor="privacy policy">{i18n.t`agree`} {i18n.t`privacy_policy`} </BoxLabel>
+                        <BoxLabel htmlFor="privacy policy">{t`agree`} {t`privacy_policy`} </BoxLabel>
                     </InputGroup>
                 </FormColLast>
             </FormContainer>
             {isFormValid ?
-                <ActiveButton onClick={(event: any) => onSubmit(event as Event)}>{i18n.t`registration`}</ActiveButton>
+                <ActiveButton onClick={(event: any) => onSubmit(event as Event)}>{t`registration`}</ActiveButton>
                 :
-                <DisabledButton disabled>{i18n.t`registration`}</DisabledButton>
+                <DisabledButton disabled>{t`registration`}</DisabledButton>
             }
         </form>
     );

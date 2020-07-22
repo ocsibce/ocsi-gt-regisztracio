@@ -5,6 +5,7 @@ export const PREVIEW_CHANGED = "preview_changed";
 export const TIME_CHANGED = "time_changed";
 export const RESULT_CHANGED = "result_changed";
 export const REQUEST_SENT = "request_sent";
+export const CHANGE_LANGUAGE = "change_language";
 
 export function dataFromApi(data: any): Action {
     return {
@@ -38,5 +39,12 @@ export function resultChanged(newResult: Result): Action {
     return {
         type: RESULT_CHANGED,
         payload: newResult
+    }
+}
+
+export function changeLanguage(newLang: "hu" | "en"): Action {
+    return {
+        type: CHANGE_LANGUAGE,
+        payload: newLang
     }
 }

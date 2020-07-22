@@ -9,6 +9,7 @@ import Countdown from './Components/Countdown';
 import Hero from './Components/Hero';
 import Footer from './Components/Footer';
 import Spinner from './Components/Spinner';
+import LanguageChanger from './Components/LanguageChanger';
 
 import MockData from './mockState.json';
 import { dataFromApi } from './State/actions';
@@ -24,15 +25,18 @@ const AppContainer = styled.div`
 
 const Main = styled.main`
   flex: 1 0 auto;
+  position: relative;
 `;
 
-function App() {
+function App(props: any) {
 
   const {loading, showPreview, showView} = useSelector((state: InitialState) => ({
     loading: state.loading,
     showPreview: state.preview,
     showView: state.time
   }));
+
+  console.log(props);
 
   const dispatch = useDispatch();
 
@@ -54,7 +58,9 @@ function App() {
         endTime: MockData.endTime,
         time,
         details: MockData.details,
-        szakok: MockData.szakok
+        detailsEn: MockData.detailsEn,
+        szakok: MockData.szakok,
+        szakokEn: MockData.szakokEn
       }))
     }, 20);
   }, []);
@@ -80,6 +86,7 @@ function App() {
     <AppContainer>
       <Main>
         {showPreview ? <PreviewBar /> : <></>}
+          <LanguageChanger />
           <Hero heroStyle={showView === "during" ? "big" : "small"} />
           {mainView}
       </Main>

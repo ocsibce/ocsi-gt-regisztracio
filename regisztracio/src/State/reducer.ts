@@ -1,14 +1,14 @@
 import { InitialState, Action } from '../utils/types';
 import { Reducer } from 'redux';
 import { initialState } from '..';
-import { PREVIEW_CHANGED, TIME_CHANGED, RESULT_CHANGED, DATA_FROM_API, REQUEST_SENT } from './actions';
+import { PREVIEW_CHANGED, TIME_CHANGED, RESULT_CHANGED, DATA_FROM_API, REQUEST_SENT, CHANGE_LANGUAGE } from './actions';
 
 const reducer: Reducer<InitialState, any> = (
     state: InitialState | undefined = initialState,
     action: Action) => {
     switch (action.type) {
         case DATA_FROM_API:
-            const {startTime, endTime, time, details, szakok} = action.payload;
+            const {startTime, endTime, time, details, detailsEn, szakok, szakokEn} = action.payload;
             return {
                 ...state,
                 loading: false,
@@ -16,7 +16,9 @@ const reducer: Reducer<InitialState, any> = (
                 endTime,
                 time,
                 details,
-                szakok
+                detailsEn,
+                szakok,
+                szakokEn,
             }
         case PREVIEW_CHANGED:
             return {
@@ -39,6 +41,11 @@ const reducer: Reducer<InitialState, any> = (
                 ...state,
                 loading: true
             };
+        case CHANGE_LANGUAGE:
+            return {
+                ...state,
+                language: action.payload
+            }
         default:
             return state;
     }

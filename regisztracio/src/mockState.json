@@ -16,29 +16,30 @@
     },
     "detailsEn": {
         "regisztracioMenete": [
-            "Regisztrálj a lenti űrlapon",
-            "Egy pár nap múlva küldünk egy e-mailt",
-            "Fizesd be a tábor árát, az e-mailben kapott információk alapján",
-            "Hozd el magaddal a bizonylatot az utalásról a táborba",
-            "Gyere el és érezd jól magad"
+            "Fill the form",
+            "We will send an e-mail in a few days",
+            "Pay for the camp according the informations in the e-mail",
+            "Bring the receipt to the camp",
+            "Come and enjoy!"
         ],
         "fontosInformaciok": [
-            "A tábor ára 29.000 Forint",
-            "Az esemény kizárólag a Budapesti Corvinus Egyetem 2019. szeptemberében felvett NAPPALI munkarendű ALAPSZAKOS hallgatói számára van meghírdetve"
+            "The camp is very expensive",
+            "The camp is for Korvo only",
+            "Everyone will speak hungarian"
         ]
     },
     "szakok": [
-        {"id": "ginf", "name": "Gazdaságinformatikus"},
-        {"id": "hr", "name": "Emberi erőforrások"},
-        {"id": "tuve", "name": "Turizmus és Vendéglátás"},
-        {"id": "komedia", "name": "Kommunikáció- és médiatudomány"},
-        {"id": "psz", "name": "Pénzügy és Számvitel"}
+        {"id": "ginf", "name": "Gazdaságinformatikus", "full": false},
+        {"id": "hr", "name": "Emberi erőforrások", "full": true},
+        {"id": "tuve", "name": "Turizmus és Vendéglátás", "full": false},
+        {"id": "komedia", "name": "Kommunikáció- és médiatudomány", "full": false},
+        {"id": "psz", "name": "Pénzügy és Számvitel", "full": false}
     ],
     "szakokEn": [
-        {"id": "ginf", "name": "Gazdaságinformatikus"},
-        {"id": "hr", "name": "Emberi erőforrások"},
-        {"id": "tuve", "name": "Turizmus és Vendéglátás"},
-        {"id": "komedia", "name": "Kommunikáció- és médiatudomány"},
-        {"id": "psz", "name": "Pénzügy és Számvitel"}
+        {"id": "ginf", "name": "Business Informatics", "full": false},
+        {"id": "hr", "name": "Human Resources", "full": true},
+        {"id": "tuve", "name": "T-Kar on G-kar", "full": false},
+        {"id": "komedia", "name": "Comedy", "full": false},
+        {"id": "psz", "name": "Money and Thingz", "full": false}
     ]
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { InitialState } from '../../utils/types';
 import { useSelector } from 'react-redux';
-import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 const DetailsContainer = styled.div`
     width: 100%;
@@ -44,30 +44,36 @@ const DetailsListItem = styled.li`
     border-bottom: 2px #36454f solid;
 `;
 
+const getDetailItems = (array: string[], key: string) => {
+    return array.map((detail, idx) => {
+        return <DetailsListItem key={`${key}-${idx}`}>{detail}</DetailsListItem>
+    })
+}
 
 const Details : React.FC = props => {
 
-    const details = useSelector((state: InitialState) => state.details);
+    const {details, detailsEn, language} = useSelector((state: InitialState) => state);
+    const [t] = useTranslation();
 
-    const regisztracioMenete = details.regisztracioMenete.map((detail, idx) => {
-        return <DetailsListItem key={`menet-${idx}`}>{detail}</DetailsListItem>
-    })
+    const regisztracioMenete = language === 'hu' ?
+        getDetailItems(details.regisztracioMenete, 'menet') :
+        getDetailItems(detailsEn.regisztracioMenete, 'menet');
 
-    const fontosInformaciok = details.fontosInformaciok.map((detail, idx) => {
-        return <DetailsListItem key={`fontos-${idx}`}>{detail}</DetailsListItem>
-    })
+    const fontosInformaciok = language === 'hu' ?
+        getDetailItems(details.fontosInformaciok, 'fontos') :
+        getDetailItems(detailsEn.fontosInformaciok, 'fontos');
 
     return (
         <DetailsContainer>
             <DetailsList>
                 <DetailsListHeader>
-                    {i18n.t`how_to_register`}
+                    {t`how_to_register`}
                 </DetailsListHeader>
                 {regisztracioMenete}
             </DetailsList>
             <DetailsList>
                 <DetailsListHeader>
-                    {i18n.t`important_information`}
+                    {t`important_information`}
                 </DetailsListHeader>
                 {fontosInformaciok}
             </DetailsList>

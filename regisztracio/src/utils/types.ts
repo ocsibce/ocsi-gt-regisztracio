@@ -8,9 +8,10 @@ type Details = {
     fontosInformaciok: string[],
 }
 
-type Szak = {
+export type Szak = {
     id: string,
-    name: string
+    name: string,
+    full: boolean
 }
 
 export type InitialState = {
@@ -21,7 +22,10 @@ export type InitialState = {
     startTime: Date,
     endTime: Date,
     details: Details
-    szakok: Szak[] | null
+    detailsEn: Details
+    szakok: Szak[] | null,
+    szakokEn: Szak[] | null,
+    language: "hu" | "en",
 }
 
 export type RegisztracioAdat = {

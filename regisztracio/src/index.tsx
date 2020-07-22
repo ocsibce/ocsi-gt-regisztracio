@@ -19,7 +19,13 @@ export const initialState: InitialState = {
     regisztracioMenete: [""],
     fontosInformaciok: [""]
   },
-  szakok: null
+  detailsEn: {
+    regisztracioMenete: [""],
+    fontosInformaciok: [""]
+  },
+  szakok: null,
+  szakokEn: null,
+  language: 'hu'
 }
 
 

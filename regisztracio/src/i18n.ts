@@ -61,7 +61,7 @@ i18n.use(LanguageDetector).init({
                 countdown_text: "van még hátra a regisztráció kezdetéig!",
                 week: '{{count}} hét',
                 day: '{{count}} nap',
-                hours: '{{count}} óra',
+                hour: '{{count}} óra',
                 minute: '{{count}} perc',
                 second: '{{count}} másodperc',
                 how_to_register: 'Regisztráció menete',

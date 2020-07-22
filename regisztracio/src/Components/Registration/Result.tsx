@@ -1,29 +1,31 @@
 import React from 'react';
-import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 const Result = (props: {sikeres: "sikeres" | "sikertelen" | "dupla" | null}) => {
+
+    const [t] = useTranslation()
 
     const text = () => {
         switch (props.sikeres) {
             case "sikeres":
                 return (
                     <>
-                        <h1> {i18n.t`congratulations`} </h1>
-                        <h2> {i18n.t`success`} </h2>
+                        <h1> {t`congratulations`} </h1>
+                        <h2> {t`success`} </h2>
                     </>
                 )
             case "sikertelen":
                 return (
                     <>
-                        <h1> {i18n.t`unfortunately`} </h1>
-                        <h2> {i18n.t`try_later`} </h2>
+                        <h1> {t`unfortunately`} </h1>
+                        <h2> {t`try_later`} </h2>
                     </>
                 )
             case "dupla":
                 return (
                     <>
-                        <h1> {i18n.t`unfortunately`} </h1>
-                        <h2> {i18n.t`duplicate`} </h2>
+                        <h1> {t`unfortunately`} </h1>
+                        <h2> {t`duplicate`} </h2>
                     </>
                 )
             case null:
