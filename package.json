@@ -1,0 +1,22 @@
+{
+  "name": "ocsi-gt-regisztracio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "reg": "cd regisztracio && yarn run start",
+    "admin": "cd admin && yarn run start",
+    "api": "cd api && docker-compose build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/csornyei/ocsi-gt-regisztracio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/csornyei/ocsi-gt-regisztracio/issues"
+  },
+  "homepage": "https://github.com/csornyei/ocsi-gt-regisztracio#readme"
+}

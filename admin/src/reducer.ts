@@ -2,7 +2,7 @@ import { InitialState, GolyaAdat, Filter } from './utils/types';
 import { Reducer } from 'redux';
 import { initialState } from './index';
 
-import { FILTER_CHANGED } from './actions';
+import { FILTER_CHANGED, GOLYA_REQUEST } from './actions';
 
 const filterGolya = (golya: GolyaAdat, filters: Filter): boolean => {
 
@@ -37,27 +37,27 @@ const filterGolya = (golya: GolyaAdat, filters: Filter): boolean => {
         }
     }
     if (filters.nap.hetfo) {
-        if (!golya.napok?.hetfo) {
+        if (!golya.hetfo) {
             return false
         }
     }
     if (filters.nap.kedd) {
-        if (!golya.napok?.kedd) {
+        if (!golya.kedd) {
             return false
         }
     }
     if (filters.nap.szerda) {
-        if (!golya.napok?.szerda) {
+        if (!golya.szerda) {
             return false
         }
     }
     if (filters.nap.csutortok) {
-        if (!golya.napok?.csutortok) {
+        if (!golya.csutortok) {
             return false
         }
     }
     if (filters.nap.pentek) {
-        if (!golya.napok?.pentek) {
+        if (!golya.pentek) {
             return false
         }
     }
@@ -110,6 +110,13 @@ const reducer: Reducer<InitialState, any> = (state: InitialState | undefined = i
             const filteredGolyaLista = state.golyaLista.filter((golya) => filterGolya(golya, filters));
             return {...state, filters, filteredGolyaLista};
 
+        case GOLYA_REQUEST:
+            console.log(action);
+            return {
+                ...state,
+                golyaLista: action.payload,
+                filteredGolyaLista: action.payload
+            };
         default:
             return state;
     }
