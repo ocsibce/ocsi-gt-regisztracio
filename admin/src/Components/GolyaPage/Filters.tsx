@@ -4,9 +4,9 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import styled from 'styled-components';
 
-import { InitialState } from '../utils/types';
-import { formatDate } from '../utils/utils';
-import { changeFilter } from '../actions';
+import { InitialState } from '../../utils/types';
+import { formatDate } from '../../utils/utils';
+import { changeFilter } from '../../State/actions';
 
 enum Napok {
     hetfo,

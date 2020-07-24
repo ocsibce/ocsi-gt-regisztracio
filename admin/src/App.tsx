@@ -5,10 +5,9 @@ import { BrowserRouter as Router,
 } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import axios, {AxiosResponse} from 'axios';
-import AdminNavbar from './Navbar';
-import Golyak from './GolyaPage/Golyak';
-import { golyaRequest } from './actions';
-import { GolyaAdat } from './utils/types';
+import AdminNavbar from './Components/Navbar';
+import Golyak from './Components/GolyaPage/Golyak';
+import { golyaRequest } from './State/actions';
 
 function App() {
 

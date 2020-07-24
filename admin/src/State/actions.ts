@@ -1,4 +1,4 @@
-import { GolyaAdat } from "./utils/types";
+import { GolyaAdat } from "../utils/types";
 
 export const FILTER_CHANGED = "filterChanged";
 export const GOLYA_REQUEST = "golyaRequest";

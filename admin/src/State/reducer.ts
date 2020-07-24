@@ -1,6 +1,6 @@
-import { InitialState, GolyaAdat, Filter } from './utils/types';
+import { InitialState, GolyaAdat, Filter } from '../utils/types';
 import { Reducer } from 'redux';
-import { initialState } from './index';
+import { initialState } from '../index';
 
 import { FILTER_CHANGED, GOLYA_REQUEST } from './actions';
 

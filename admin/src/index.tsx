@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { InitialState } from './utils/types';
-import configureStore from './store';
+import configureStore from './State/store';
 
 export const initialState: InitialState = {
   golyaLista: [],

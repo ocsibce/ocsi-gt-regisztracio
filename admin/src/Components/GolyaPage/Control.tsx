@@ -1,8 +1,8 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import { useSelector } from 'react-redux';
-import { InitialState, GolyaAdat } from '../utils/types';
-import { formatDate } from '../utils/utils';
+import { InitialState, GolyaAdat } from '../../utils/types';
+import { formatDate } from '../../utils/utils';
 
 
 
