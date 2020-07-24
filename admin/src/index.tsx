@@ -23,7 +23,9 @@ export const initialState: InitialState = {
     szak: [],
     regDateKezdo: 0,
     regDateUtolso: 0,
-  }
+  },
+  settings: [],
+  savingSettings: false
 };
 
 ReactDOM.render(

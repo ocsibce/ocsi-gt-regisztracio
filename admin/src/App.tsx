@@ -5,6 +5,7 @@ import { BrowserRouter as Router,
 } from 'react-router-dom';
 import AdminNavbar from './Components/Navbar';
 import Golyak from './Components/GolyaPage/Golyak';
+import Settings from './Components/SettingsPage/Settings';
 
 function App() {
 
@@ -14,7 +15,7 @@ function App() {
       <main className="pt-3">
         <Switch>
           <Route exact path="/">
-            <h1>Main</h1>
+            <Settings />
           </Route>
           <Route path="/golyak">
             <Golyak />

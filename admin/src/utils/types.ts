@@ -40,4 +40,46 @@ export type InitialState = {
     golyaLista: GolyaAdat[];
     filteredGolyaLista: GolyaAdat[];
     filters: Filter;
+    settings: SettingsData[];
+    savingSettings: boolean;
+}
+
+export type Szak = {
+    key: string,
+    name: string,
+    betelt: boolean
+};
+
+export type Markdown = {
+    text: string;
+    type: MarkdownType
+}
+
+export enum MarkdownType {
+    "paragraph",
+    "heading"
+}
+
+export type SettingsData = {
+    ev: string,
+    nev: string,
+    start_date: number,
+    end_date: number,
+    reszletek: {
+        regisztracioMenete: string[],
+        fontosInformaciok: string[]
+    },
+    reszletek_en?: {
+        regisztracioMenete: string[],
+        fontosInformaciok: string[]
+    },
+    szakok: Szak[],
+    szakok_en?: Szak[],
+    adatkezeles: Markdown[],
+    adatkezeles_en?: Markdown[],
+    hazirend: Markdown[],
+    hazirend_en?: Markdown[],
+    banner_link?: string,
+    eles: boolean,
+    preview: boolean
 }
