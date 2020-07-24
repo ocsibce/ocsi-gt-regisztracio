@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import { useDispatch } from 'react-redux';
-import axios, {AxiosResponse} from 'axios';
+import {AxiosResponse} from 'axios';
 import ocsiApi from '../../API/ocsiApi';
 import { golyaRequest } from '../../State/actions';
 

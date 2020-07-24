@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import styled from 'styled-components';
+import { BsFillCaretDownFill, BsFillCaretUpFill} from 'react-icons/bs';
 
 import { InitialState } from '../../utils/types';
 import { formatDate } from '../../utils/utils';
@@ -335,7 +336,7 @@ const Filters = () => {
     </>
     : null;
 
-    const arrow = showFilters ? <span> &#x25B2; </span> : <span> &#x25BC; </span>;
+    const arrow = showFilters ? <BsFillCaretUpFill /> : <BsFillCaretDownFill /> ;
 
     return (
         <div className="mt-3">
