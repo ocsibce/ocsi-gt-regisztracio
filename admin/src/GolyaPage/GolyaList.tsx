@@ -7,6 +7,8 @@ const GolyaList = () => {
 
     const golyak = useSelector((state: InitialState) => state.filteredGolyaLista);
 
+    console.log(golyak);
+
     const tableRows = golyak.map((golya) => {
         const {id, nev, email, szak} = golya;
         return <tr key={id}>

@@ -15,13 +15,11 @@ export const initialState: InitialState = {
     minId: 0,
     maxId: 0,
     nev: "",
-    nap: {
-      hetfo: false,
-      kedd: false,
-      szerda: false,
-      csutortok: false,
-      pentek: false
-    },
+    hetfo: false,
+    kedd: false,
+    szerda: false,
+    csutortok: false,
+    pentek: false,
     szak: [],
     regDateKezdo: 0,
     regDateUtolso: 0,

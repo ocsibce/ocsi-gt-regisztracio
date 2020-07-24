@@ -7,8 +7,8 @@ export type GolyaAdat = {
     cim: string;
     nem: "Férfi" | "Nő";
     oktatasiAzonosito: number;
-    szuletesDatum: string;
-    szuletesHely: string;
+    szuletesiDatum: string;
+    szuletesiHely: string;
     poloMeret: string;
     hetfo: boolean;
     kedd: boolean;
@@ -19,17 +19,21 @@ export type GolyaAdat = {
     allergia: string | null;
     etelerzekeny: string | null;
     egyeb: string | null;
-    regisztralt: number;
+    regisztracioDatuma: number;
 }
 
 export type Filter = {
     minId: number;
     maxId: number;
     nev: string;
-    nap: Napok,
-    szak: string[],
-    regDateKezdo: number,
-    regDateUtolso: number,
+    hetfo: boolean;
+    kedd: boolean;
+    szerda: boolean;
+    csutortok: boolean;
+    pentek: boolean;
+    szak: string[];
+    regDateKezdo: number;
+    regDateUtolso: number;
 }
 
 export type InitialState = {

@@ -8,6 +8,7 @@ import axios, {AxiosResponse} from 'axios';
 import AdminNavbar from './Navbar';
 import Golyak from './GolyaPage/Golyak';
 import { golyaRequest } from './actions';
+import { GolyaAdat } from './utils/types';
 
 function App() {
 
@@ -15,8 +16,17 @@ function App() {
 
   useEffect(() => {
     axios.get('http://teszt.api.bceocsi.com/golya/read.php').then((response: AxiosResponse) => {
-      console.log(response.data.records)
-      dispatch(golyaRequest(response.data.records))
+      const golyaAdatok = response.data.records;
+      const javitottGolyaAdatok = golyaAdatok.map((golya: any) => {
+        golya.hetfo = golya.hetfo === "1";
+        golya.kedd = golya.kedd === "1";
+        golya.szerda = golya.szerda === "1";
+        golya.csutortok = golya.csutortok === "1";
+        golya.pentek = golya.pentek === "1";
+
+        return golya;
+      })
+      dispatch(golyaRequest(javitottGolyaAdatok))
     })
   }, []);
 

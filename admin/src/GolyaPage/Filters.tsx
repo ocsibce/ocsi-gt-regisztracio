@@ -142,19 +142,19 @@ const Filters = () => {
             aktivSzurok.push(<FilterItem key="nev" onClick={() => removeFilter(FilterType.nev)} >Név: {filters.nev}</FilterItem>)
         }
 
-        if (filters.nap.hetfo) {
+        if (filters.hetfo) {
             aktivSzurok.push(<FilterItem key="hetfo" onClick={() => removeFilter(FilterType.hetfo)} >Hétfő</FilterItem>)
         }
-        if (filters.nap.kedd) {
+        if (filters.kedd) {
             aktivSzurok.push(<FilterItem key="kedd" onClick={() => removeFilter(FilterType.kedd)} >Kedd</FilterItem>)
         }
-        if (filters.nap.szerda) {
+        if (filters.szerda) {
             aktivSzurok.push(<FilterItem key="szerda" onClick={() => removeFilter(FilterType.szerda)} >Szerda</FilterItem>)
         }
-        if (filters.nap.csutortok) {
+        if (filters.csutortok) {
             aktivSzurok.push(<FilterItem key="csutortok" onClick={() => removeFilter(FilterType.csutortok)} >Csütörtök</FilterItem>)
         }
-        if (filters.nap.pentek) {
+        if (filters.pentek) {
             aktivSzurok.push(<FilterItem key="pentek" onClick={() => removeFilter(FilterType.pentek)} >Péntek</FilterItem>)
         }
 
@@ -250,7 +250,7 @@ const Filters = () => {
                             label="Hétfő"
                             type='checkbox'
                             id='hetfo'
-                            checked={filters.nap.hetfo}
+                            checked={filters.hetfo}
                             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {onDayChange(event, Napok.hetfo)}}
                         />
                         <Form.Check
@@ -258,7 +258,7 @@ const Filters = () => {
                             label="Kedd"
                             type='checkbox'
                             id='kedd'
-                            checked={filters.nap.kedd}
+                            checked={filters.kedd}
                             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {onDayChange(event, Napok.kedd)}}
                         />
                         <Form.Check
@@ -266,7 +266,7 @@ const Filters = () => {
                             label="Szerda"
                             type='checkbox'
                             id='szerda'
-                            checked={filters.nap.szerda}
+                            checked={filters.szerda}
                             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {onDayChange(event, Napok.szerda)}}
                         />
                         <Form.Check
@@ -274,7 +274,7 @@ const Filters = () => {
                             label="Csütörtök"
                             type='checkbox'
                             id='csutortok'
-                            checked={filters.nap.csutortok}
+                            checked={filters.csutortok}
                             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {onDayChange(event, Napok.csutortok)}}
                         />
                         <Form.Check
@@ -282,7 +282,7 @@ const Filters = () => {
                             label="Péntek"
                             type='checkbox'
                             id='pentek'
-                            checked={filters.nap.pentek}
+                            checked={filters.pentek}
                             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {onDayChange(event, Napok.pentek)}}
                         />
                     </div>
