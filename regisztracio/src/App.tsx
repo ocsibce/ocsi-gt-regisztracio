@@ -10,9 +10,11 @@ import Hero from './Components/Hero';
 import Footer from './Components/Footer';
 import Spinner from './Components/Spinner';
 import LanguageChanger from './Components/LanguageChanger';
+import ocsiApi from './API/ocsiApi';
 
 import MockData from './mockState.json';
 import { dataFromApi } from './State/actions';
+import { AxiosResponse, AxiosError } from 'axios';
 
 const AppContainer = styled.div`
   display: flex;
@@ -38,29 +40,51 @@ function App(props: any) {
 
   const dispatch = useDispatch();
 
-  // TODO real api call here
   useEffect(() => {
-    setTimeout(() => {
+    const url = `/settings/readOne.php?${showPreview ? 'preview' : 'eles'}=1`
+    ocsiApi.get(url).then(({data}) => {
+      console.log(data);
+      const startTime = data.start_date;
+      const endTime = data.end_date;
+      const details = JSON.parse(data.reszletek);
+      const detailsEn = JSON.parse(data.reszletek_en);
+      const szakok = JSON.parse(data.szakok);
+      const szakokEn = JSON.parse(data.szakok_en);
+      const adatkezeles = JSON.parse(data.adatkezeles);
+      const adatkezelesEn = JSON.parse(data.adatkezeles_en);
+      const hazirend = JSON.parse(data.hazirend);
+      const hazirendEn = JSON.parse(data.hazirend_en);
+      const bannerLink = data.banner_link;
+
       let time: Time | null = null;
       const currentTime = new Date(Date.now());
-      if (new Date(MockData.startTime) > currentTime) {
+      if (new Date(startTime) > currentTime) {
         time = "before";
-      } else if (new Date(MockData.endTime) < currentTime) {
+      } else if (new Date(endTime) < currentTime) {
         time = "after";
       } else {
         time = "during"
       }
 
-      dispatch(dataFromApi({
-        startTime: MockData.startTime,
-        endTime: MockData.endTime,
+      const settingsState = {
+        startTime,
+        endTime,
         time,
-        details: MockData.details,
-        detailsEn: MockData.detailsEn,
-        szakok: MockData.szakok,
-        szakokEn: MockData.szakokEn
-      }))
-    }, 20);
+        details,
+        detailsEn,
+        szakok,
+        szakokEn,
+        adatkezeles,
+        adatkezelesEn,
+        hazirend,
+        hazirendEn,
+        bannerLink
+      }
+      console.log(settingsState);
+      dispatch(dataFromApi(settingsState));
+    }).catch((err: AxiosError) => {
+      console.log(err);
+    })
   }, []);
 
   let mainView = null;

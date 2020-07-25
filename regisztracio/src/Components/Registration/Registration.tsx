@@ -4,7 +4,7 @@ import Details from './Details';
 import Form from './Form';
 import Result from './Result';
 import { useSelector } from 'react-redux';
-import { InitialState } from '../../utils/types';
+import { InitialState, Szak } from '../../utils/types';
 import { useTranslation } from 'react-i18next';
 
 const Main = styled.div`
@@ -17,10 +17,21 @@ const Main = styled.div`
     }
 `;
 
+const FullCoursesHeading = styled.h2`
+    color: red;
+`;
+
+
 const Registration : React.FC = props => {
 
-    const result = useSelector((state: InitialState) => state.result);
+    const {result, szakok, szakokEn, language} = useSelector((state: InitialState) => state);
     const [t] = useTranslation();
+
+    const getFullSzak = (szakArr: Szak[]) => {
+        return szakArr.filter((szak) => szak.betelt).map(szak => szak.name);
+    }
+
+    const fullSzakok = getFullSzak(language === 'hu' ? szakok! : szakokEn!);
 
     let mainPart;
 
@@ -34,6 +45,11 @@ const Registration : React.FC = props => {
         <Main>
                 <Details />
                 <h1>{t`registration`}</h1>
+                {fullSzakok.length > 0 ? <>
+                    <FullCoursesHeading>{t`full_courses_heading`}</FullCoursesHeading>
+                    <FullCoursesHeading> {fullSzakok.join(', ')} </FullCoursesHeading>
+                </>
+                : null}
                 {mainPart}
         </Main>
     );

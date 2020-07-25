@@ -1,7 +1,6 @@
 import i18n from 'i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
 
-i18n.use(LanguageDetector).init({
+i18n.init({
     resources: {
         en: {
             translations: {
@@ -53,7 +52,10 @@ i18n.use(LanguageDetector).init({
                 success: 'Your registration was successful!',
                 unfortunately: 'Unfortunately, your registration was unsuccessful',
                 try_later: 'Try again later',
-                duplicate: 'Someone already registered with these data'
+                duplicate: 'Someone already registered with these data',
+                full: 'Full',
+                full_courses_heading: "We can't accept anymore registration for the following mayors as they are full:",
+                closed: 'The registration has been closed'
             }
         },
         hu: {
@@ -101,7 +103,10 @@ i18n.use(LanguageDetector).init({
                 success: 'A regisztráció sikeres volt',
                 unfortunately: 'Sajnos nem sikerült regisztrálni',
                 try_later: 'Próbáld meg kicsit később',
-                duplicate: 'Ezekkel az adatokkal már regisztráltak'
+                duplicate: 'Ezekkel az adatokkal már regisztráltak',
+                full: 'Betelt',
+                full_courses_heading: "A következő szakokra már nem tudsz regisztrálni, mivel tele vannak:",
+                closed: 'A regisztrációt lezártuk',
             }
         }
     },

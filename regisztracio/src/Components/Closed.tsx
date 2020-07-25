@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 
 const Text = styled.h1`
     text-align: center;
@@ -8,9 +9,12 @@ const Text = styled.h1`
 `;
 
 const Closed : React.FC = props => {
+
+    const [t] = useTranslation();
+
     return (
         <>
-            <Text>A regisztrációt lezártuk</Text>
+            <Text>{t`closed`}</Text>
         </>
     );
 }

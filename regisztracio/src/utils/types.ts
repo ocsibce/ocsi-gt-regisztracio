@@ -9,9 +9,9 @@ type Details = {
 }
 
 export type Szak = {
-    id: string,
+    key: string,
     name: string,
-    full: boolean
+    betelt: boolean
 }
 
 export type InitialState = {
