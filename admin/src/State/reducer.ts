@@ -1,8 +1,8 @@
-import { InitialState, GolyaAdat, Filter } from './utils/types';
+import { InitialState, GolyaAdat, Filter } from '../utils/types';
 import { Reducer } from 'redux';
-import { initialState } from './index';
+import { initialState } from '../index';
 
-import { FILTER_CHANGED, GOLYA_REQUEST } from './actions';
+import { FILTER_CHANGED, GOLYA_REQUEST, SETTINGS_SAVE, SETTINGS_RESPONSE, EDITING_SETTINGS } from './actions';
 
 const filterGolya = (golya: GolyaAdat, filters: Filter): boolean => {
 
@@ -22,12 +22,12 @@ const filterGolya = (golya: GolyaAdat, filters: Filter): boolean => {
         }
     }
     if (filters.regDateKezdo !== 0) {
-        if (golya.regisztralt! < filters.regDateKezdo) {
+        if (golya.regisztracioDatuma! < filters.regDateKezdo) {
             return false;
         }
     }
     if (filters.regDateUtolso !== 0) {
-        if (golya.regisztralt! > filters.regDateUtolso) {
+        if (golya.regisztracioDatuma! > filters.regDateUtolso) {
             return false;
         }
     }
@@ -36,27 +36,27 @@ const filterGolya = (golya: GolyaAdat, filters: Filter): boolean => {
             return false;
         }
     }
-    if (filters.nap.hetfo) {
+    if (filters.hetfo) {
         if (!golya.hetfo) {
             return false
         }
     }
-    if (filters.nap.kedd) {
+    if (filters.kedd) {
         if (!golya.kedd) {
             return false
         }
     }
-    if (filters.nap.szerda) {
+    if (filters.szerda) {
         if (!golya.szerda) {
             return false
         }
     }
-    if (filters.nap.csutortok) {
+    if (filters.csutortok) {
         if (!golya.csutortok) {
             return false
         }
     }
-    if (filters.nap.pentek) {
+    if (filters.pentek) {
         if (!golya.pentek) {
             return false
         }
@@ -75,19 +75,19 @@ const reducer: Reducer<InitialState, any> = (state: InitialState | undefined = i
                     filters.nev = newValue;
                     break;
                 case "hetfo":
-                    filters.nap.hetfo = newValue;
+                    filters.hetfo = newValue;
                     break;
                 case "kedd":
-                    filters.nap.kedd = newValue;
+                    filters.kedd = newValue;
                     break;
                 case "szerda":
-                    filters.nap.szerda = newValue;
+                    filters.szerda = newValue;
                     break;
                 case "csutortok":
-                    filters.nap.csutortok = newValue;
+                    filters.csutortok = newValue;
                     break;
                 case "pentek":
-                    filters.nap.pentek = newValue;
+                    filters.pentek = newValue;
                     break;
                 case "szak":
                     filters.szak = newValue;
@@ -111,12 +111,26 @@ const reducer: Reducer<InitialState, any> = (state: InitialState | undefined = i
             return {...state, filters, filteredGolyaLista};
 
         case GOLYA_REQUEST:
-            console.log(action);
             return {
                 ...state,
                 golyaLista: action.payload,
                 filteredGolyaLista: action.payload
             };
+        case SETTINGS_SAVE:
+            return {
+                ...state,
+                savingSettings: !state.savingSettings,
+            };
+        case SETTINGS_RESPONSE:
+            return {
+                ...state,
+                settings: action.payload
+            }
+        case EDITING_SETTINGS:
+            return {
+                ...state,
+                editing: action.payload
+            }
         default:
             return state;
     }

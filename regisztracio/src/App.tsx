@@ -36,8 +36,6 @@ function App(props: any) {
     showView: state.time
   }));
 
-  console.log(props);
-
   const dispatch = useDispatch();
 
   // TODO real api call here

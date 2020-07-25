@@ -33,13 +33,7 @@
             return $stmt;
         }
 
-        public function readOne() {
-            $query = "SELECT * FROM " . $this->table_name . " WHERE id = ? LIMIT 0,1";
-            $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(1, $this->id);
-            $stmt->execute();
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
+        function setValues($row) {
             $this->ev = $row['ev'];
             $this->nev = $row['nev'];
             $this->start_date = $row['start_date'];
@@ -57,6 +51,34 @@
             $this->preview = $row['preview'];
             $this->created_at = $row['created_at'];
             $this->updated = $row['updated'];
+        }
+
+        public function readOne() {
+            $query = "SELECT * FROM " . $this->table_name . " WHERE id = ? LIMIT 0,1";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(1, $this->id);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $this->setValues($row);
+        }
+
+        public function readEles() {
+            $query = "SELECT * FROM " . $this->table_name . " WHERE eles = 1 LIMIT 0,1";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $this->setValues($row);
+        }
+
+        public function readPreview() {
+            $query = "SELECT * FROM " . $this->table_name . " WHERE preview = 1 LIMIT 0,1";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $this->setValues($row);
         }
 
         public function create() {

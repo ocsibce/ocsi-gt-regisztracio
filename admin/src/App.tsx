@@ -1,24 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router,
          Switch,
          Route
 } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import axios, {AxiosResponse} from 'axios';
-import AdminNavbar from './Navbar';
-import Golyak from './GolyaPage/Golyak';
-import { golyaRequest } from './actions';
+import AdminNavbar from './Components/Navbar';
+import Golyak from './Components/GolyaPage/Golyak';
+import Settings from './Components/SettingsPage/Settings';
 
 function App() {
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    axios.get('http://teszt.api.bceocsi.com/golya/read.php').then((response: AxiosResponse) => {
-      console.log(response.data.records)
-      dispatch(golyaRequest(response.data.records))
-    })
-  }, []);
 
   return (
     <Router>
@@ -26,7 +15,7 @@ function App() {
       <main className="pt-3">
         <Switch>
           <Route exact path="/">
-            <h1>Main</h1>
+            <Settings />
           </Route>
           <Route path="/golyak">
             <Golyak />

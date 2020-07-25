@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { InitialState } from './utils/types';
-import configureStore from './store';
+import configureStore from './State/store';
 
 export const initialState: InitialState = {
   golyaLista: [],
@@ -15,17 +15,18 @@ export const initialState: InitialState = {
     minId: 0,
     maxId: 0,
     nev: "",
-    nap: {
-      hetfo: false,
-      kedd: false,
-      szerda: false,
-      csutortok: false,
-      pentek: false
-    },
+    hetfo: false,
+    kedd: false,
+    szerda: false,
+    csutortok: false,
+    pentek: false,
     szak: [],
     regDateKezdo: 0,
     regDateUtolso: 0,
-  }
+  },
+  settings: [],
+  savingSettings: false,
+  editing: null,
 };
 
 ReactDOM.render(
