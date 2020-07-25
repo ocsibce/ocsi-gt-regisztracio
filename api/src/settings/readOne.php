@@ -13,9 +13,14 @@
 
     $settings = new RegisztracioSettings($db);
 
-    $settings->id = isset($_GET['id']) ? $_GET['id'] : die();
-
-    $settings->readOne();
+    if (isset($_GET['eles'])) {
+        $settings->readEles();
+    } else if (isset($_GET['preview'])) {
+        $settings->readPreview();
+    } else {
+        $settings->id = isset($_GET['id']) ? $_GET['id'] : die();
+        $settings->readOne();
+    }
 
     if($settings->ev != null) {
         $setting_item = array(
