@@ -25,7 +25,8 @@ export const initialState: InitialState = {
     regDateUtolso: 0,
   },
   settings: [],
-  savingSettings: false
+  savingSettings: false,
+  editing: null,
 };
 
 ReactDOM.render(

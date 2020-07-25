@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ocsiApi from '../../API/ocsiApi';
 import { AxiosResponse, AxiosError } from 'axios';
 import Container from 'react-bootstrap/Container';
@@ -9,20 +9,31 @@ import SettingsForm from './Form';
 import List from './List';
 import { useDispatch, useSelector } from 'react-redux';
 import { InitialState } from '../../utils/types';
-import { settingsResponse } from '../../State/actions';
+import { settingsResponse, editingSetting } from '../../State/actions';
 
 const SettingsPage : React.FC = props => {
 
     const dispatch = useDispatch();
     const reloadSettings = useSelector((state: InitialState) => (state.savingSettings));
+    const [editedSetting, setEditedSetting] = useState(-1);
 
     useEffect(() => {
-        ocsiApi.get('/settings/read.php').then((resp: AxiosResponse) => {
-            dispatch(settingsResponse(resp.data.records))
+        ocsiApi.get('/settings/read.php').then(({data: {records}}) => {
+            dispatch(settingsResponse(records))
         }).catch((err: AxiosError) => {
             console.log(err);
         })
     }, [reloadSettings])
+
+    useEffect(() => {
+        if (editedSetting !== -1) {
+            ocsiApi.get(`/settings/readOne.php?id=${editedSetting}`).then(({data}) => {
+                dispatch(editingSetting(data));
+            }).catch((err: AxiosError) => {
+                console.log(err);
+            })
+        }
+    }, [editedSetting])
 
     return (
     <Container>
@@ -31,10 +42,10 @@ const SettingsPage : React.FC = props => {
         </Row>
         <Row>
             <Col xs={3}>
-                <List />
+                <List handleSelect={setEditedSetting} />
             </Col>
             <Col>
-                <SettingsForm />
+                <SettingsForm isEditing={editedSetting >= 0} finishedEditing={() => {setEditedSetting(-1)}}/>
             </Col>
         </Row>
     </Container>

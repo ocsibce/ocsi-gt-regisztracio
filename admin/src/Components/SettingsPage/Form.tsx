@@ -5,17 +5,19 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import ArrayInput from './ArrayInput';
-import { Szak, SettingsData, Markdown } from '../../utils/types';
+import { InitialState, Szak, SettingsData, Markdown } from '../../utils/types';
 import { formatDate } from '../../utils/utils';
 import ocsiApi  from '../../API/ocsiApi';
 import { AxiosResponse, AxiosError } from 'axios';
-import { useDispatch } from 'react-redux';
-import { settingsSave } from '../../State/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { settingsSave, editingSetting } from '../../State/actions';
 
-const SettingsForm : React.FC = props => {
+const SettingsForm = ({isEditing, finishedEditing}: {isEditing: boolean, finishedEditing: () => void}) => {
 
     const dispatch = useDispatch();
+    const {editing} = useSelector((state: InitialState) => state);
 
+    const [id, setID] = useState(-1);
     const [ev, setEv] = useState("");
     const [nev, setNev] = useState("");
     const [startDate, setStartDate] = useState(Date.now());
@@ -32,6 +34,50 @@ const SettingsForm : React.FC = props => {
     const [hazirendEN, setHazirendEN] = useState<Markdown[]>([]);
     const [bannerLink, setBannerLink] = useState("");
     const [validated, setValidated] = useState(false);
+
+    useEffect(() => {
+        if (isEditing) {
+            if (!!editing) {
+
+                const reszletek = JSON.parse(editing.reszletek as unknown as string);
+                setFontosInformaciok(reszletek.fontosInformaciok);
+                setRegMenet(reszletek.regisztracioMenete);
+                if (editing.reszletek_en) {
+                    const reszletek_en = JSON.parse(editing.reszletek_en as unknown as string);
+                    setFontosInformaciokEN(reszletek_en.fontosInformaciok);
+                    setRegMenetEN(reszletek_en.regisztracioMenete);
+                }
+                if (!!editing.id) {
+                    setID(editing.id);
+                }
+
+                setEv(editing.ev);
+                setNev(editing.nev);
+
+                setStartDate(new Date(editing.start_date).getTime());
+                setEndDate(new Date(editing.end_date).getTime());
+
+                setSzakok(JSON.parse(editing.szakok as unknown as string));
+                if (!!editing.szakok_en) {
+                    setSzakokEN(JSON.parse(editing.szakok_en as unknown as string));
+                }
+
+                setAdatkezeles(JSON.parse(editing.adatkezeles as unknown as string));
+                if (!!editing.adatkezeles_en) {
+                    setAdatkezelesEN(JSON.parse(editing.adatkezeles_en as unknown as string));
+                }
+
+                setHazirend(JSON.parse(editing.hazirend as unknown as string));
+                if (!!editing.hazirend_en) {
+                    setHazirendEN(JSON.parse(editing.hazirend_en as unknown as string));
+                }
+
+                if (!!editing.banner_link) {
+                    setBannerLink(editing.banner_link);
+                }
+            }
+        }
+    }, [editing]);
 
     const validateForm = () => {
         if (ev === "") {
@@ -58,7 +104,7 @@ const SettingsForm : React.FC = props => {
         bannerLink
     ]);
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         dispatch(settingsSave());
         const postData: SettingsData = {
             ev,
@@ -80,25 +126,63 @@ const SettingsForm : React.FC = props => {
             hazirend,
             hazirend_en: hazirendEN,
             banner_link: bannerLink,
-            eles: false,
-            preview: false
+            eles: "0",
+            preview: "0"
         };
 
-        ocsiApi.post('/settings/create.php', postData, {
+        if (isEditing) {
+            const updateData = {
+                ...postData,
+                id,
+                eles: editing!.eles,
+                preview: editing!.preview,
+            };
+
+            const updateResp = await ocsiApi.put('/settings/update.php', updateData, {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json',
+                }
+            });
+            console.log(updateResp);
+            dispatch(settingsSave());
+            dispatch(editingSetting(null));
+            finishedEditing();
+            emptyForm();
+            return;
+        }
+
+        const postResponse = await ocsiApi.post('/settings/create.php', postData, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
             }
-        }).then((resp: AxiosResponse) => {
-            console.log(resp.status);
-            dispatch(settingsSave());
-        }).catch((err: AxiosError) => {
-            console.log(err);
-            if (err.code === '403') {
-                console.log('Duplicate')
-            }
-            dispatch(settingsSave());
         })
+        console.log(postResponse);
+        if(postResponse.status === 403) {
+            console.log('Duplicate (név)');
+        }
+        dispatch(settingsSave());
+        emptyForm();
+    }
+
+    const emptyForm = () => {
+        setID(-1);
+        setEv("");
+        setNev("");
+        setStartDate(Date.now());
+        setEndDate(Date.now());
+        setFontosInformaciok([]);
+        setFontosInformaciokEN([]);
+        setRegMenet([]);
+        setRegMenetEN([]);
+        setSzakok([]);
+        setSzakokEN([]);
+        setAdatkezeles([]);
+        setAdatkezelesEN([]);
+        setHazirend([]);
+        setHazirendEN([]);
+        setBannerLink("");
     }
 
     return (
@@ -223,7 +307,7 @@ const SettingsForm : React.FC = props => {
                     <Form.Control type="text" value={bannerLink} onChange={(event) => setBannerLink(event.target.value)} />
                 </Form.Group>
                 <Button onClick={handleSubmit} disabled={!validated}>
-                    Hozzáadás
+                    { isEditing ? "Szerkszetés" : "Hozzáadás"}
                 </Button>
             </Form>
         </Jumbotron>

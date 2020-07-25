@@ -2,7 +2,7 @@ import { InitialState, GolyaAdat, Filter } from '../utils/types';
 import { Reducer } from 'redux';
 import { initialState } from '../index';
 
-import { FILTER_CHANGED, GOLYA_REQUEST, SETTINGS_SAVE, SETTINGS_RESPONSE } from './actions';
+import { FILTER_CHANGED, GOLYA_REQUEST, SETTINGS_SAVE, SETTINGS_RESPONSE, EDITING_SETTINGS } from './actions';
 
 const filterGolya = (golya: GolyaAdat, filters: Filter): boolean => {
 
@@ -125,6 +125,11 @@ const reducer: Reducer<InitialState, any> = (state: InitialState | undefined = i
             return {
                 ...state,
                 settings: action.payload
+            }
+        case EDITING_SETTINGS:
+            return {
+                ...state,
+                editing: action.payload
             }
         default:
             return state;

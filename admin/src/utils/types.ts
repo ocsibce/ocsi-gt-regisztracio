@@ -41,6 +41,7 @@ export type InitialState = {
     filteredGolyaLista: GolyaAdat[];
     filters: Filter;
     settings: SettingsData[];
+    editing: SettingsData | null,
     savingSettings: boolean;
 }
 
@@ -61,6 +62,7 @@ export enum MarkdownType {
 }
 
 export type SettingsData = {
+    id?: number,
     ev: string,
     nev: string,
     start_date: number,
@@ -80,6 +82,6 @@ export type SettingsData = {
     hazirend: Markdown[],
     hazirend_en?: Markdown[],
     banner_link?: string,
-    eles: boolean,
-    preview: boolean
+    eles: "0" | "1",
+    preview: "0" | "1"
 }
