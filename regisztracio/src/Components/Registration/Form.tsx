@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import axios, { AxiosResponse, AxiosError } from 'axios';
+import { AxiosResponse, AxiosError } from 'axios';
+import ocsiApi from '../../API/ocsiApi';
 import { RegisztracioAdat, InitialState, Szak } from '../../utils/types';
 import { requestSent, resultChanged } from '../../State/actions';
 import { useTranslation } from 'react-i18next';
@@ -32,6 +33,10 @@ const InputGroup = styled.div`
     flex-direction: row;
     align-items: baseline;
     justify-content: space-between;
+`;
+
+const TopMarginInputGroup = styled(InputGroup)`
+    margin-top: 24px;
 `;
 
 const InputGroupDays = styled(InputGroup)`
@@ -124,12 +129,6 @@ const DisabledButton = styled(Button)`
     background-color: #666;
 `;
 
-const getSzakOptions = (szakArray: Szak[]) => {
-    return szakArray.map((szak) => {
-        return <option key={szak.name} value={szak.id} disabled={szak.full} >{szak.name} {szak.full ? " - Betelt" : ""} </option>
-    })
-}
-
 const Form : React.FC = props => {
 
     const [regAdat, setRegAdat] = useState<RegisztracioAdat>({
@@ -165,6 +164,12 @@ const Form : React.FC = props => {
     const dispatch = useDispatch();
 
     const [t] = useTranslation();
+
+    const getSzakOptions = (szakArray: Szak[]) => {
+        return szakArray.map((szak) => {
+            return <option key={szak.name} value={szak.key} disabled={szak.betelt} >{szak.name} {szak.betelt ? ` - ${t`full`}` : ""} </option>
+        })
+    }
 
     const szakOptions = language === 'hu' ? getSzakOptions(szakok!)  : getSzakOptions(szakokEn!);
 
@@ -405,9 +410,7 @@ const Form : React.FC = props => {
             egyeb: regAdat.egyeb
         };
 
-        axios('http://teszt.api.bceocsi.com/golya/create.php', {
-            method: 'post',
-            data: golyaAdat,
+        ocsiApi.post('/golya/create.php', golyaAdat, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
@@ -626,7 +629,8 @@ const Form : React.FC = props => {
                         <Label>{t`other`}</Label>
                         <Input type="text" name="egyeb" id="egyeb" value={regAdat.egyeb} onChange={egyebChanged} />
                     </InputGroup>
-                    <InputGroup>
+                    <TopMarginInputGroup>
+                    <div>
                         <input
                             type="checkbox"
                             name="regulations"
@@ -634,6 +638,8 @@ const Form : React.FC = props => {
                             checked={false}
                             onChange={() => {console.log('regulations')}} />
                         <BoxLabel htmlFor="regulations">{t`agree`} {t`regulations`} </BoxLabel>
+                    </div>
+                    <div>
                         <input
                             type="checkbox"
                             name="privacy policy"
@@ -641,7 +647,8 @@ const Form : React.FC = props => {
                             checked={false}
                             onChange={() => {console.log('privacy policy')}} />
                         <BoxLabel htmlFor="privacy policy">{t`agree`} {t`privacy_policy`} </BoxLabel>
-                    </InputGroup>
+                    </div>
+                    </TopMarginInputGroup>
                 </FormColLast>
             </FormContainer>
             {isFormValid ?

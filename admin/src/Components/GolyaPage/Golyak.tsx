@@ -32,7 +32,7 @@ const Golyak = () => {
         })
       }, []);
 
-    // BLOCKED - Request data -> API needed
+    // DONE - Request data -> API needed
     // DONE - Show data
     // DONE - Export CSV
     // DONE - Filtering
