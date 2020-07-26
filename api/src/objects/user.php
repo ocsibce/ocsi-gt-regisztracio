@@ -71,12 +71,39 @@
                 "username" => $this->username,
                 "iat" => time(),
                 "nbf" => time() + 6,
+                "expire" => time() + 86400,
             );
 
             return JWT::encode($payload, $key);
         }
 
-        public static function validateToken($tokenString, $uName) {
+        public static function getAuthToken() {
+            $headers = apache_request_headers();
+            if (isset($headers['Authorization'])) {
+                $auth = $headers['Authorization'];
+                $auth_array = explode(' ', $auth);
+                if ($auth_array[0] != 'Bearer') {
+                    http_response_code(400);
+                    echo json_encode(
+                        array(
+                            "message" => 'Authorization not valid!'
+                        )
+                    );
+                    die();
+                }
+                return $auth_array[1];
+            } else {
+                http_response_code(400);
+                echo json_encode(
+                    array(
+                        "message" => 'No authorization sent'
+                    )
+                );
+                die();
+            }
+        }
+
+        public static function validateToken($tokenString) {
             require '../config/secrets.php';
 
             try {
@@ -84,7 +111,10 @@
             } catch (Exception $e) {
                 return false;
             }
-            if ($decoded->username != $uName) {
+            if (time() < $decoded->nbf) {
+                return false;
+            }
+            if (time() > $decoded->expire) {
                 return false;
             }
             return true;
