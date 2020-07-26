@@ -44,6 +44,15 @@ CREATE TABLE `adatbazis`.`settings` (
     `updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
+CREATE TABLE `adatbazis`.`users` (
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+    `username` VARCHAR(256) NOT NULL ,
+    `password` VARCHAR(300) NOT NULL ,
+    `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+    `new_password_token` VARCHAR(256) NULL DEFAULT NULL ,
+    `password_token_expire` TIMESTAMP NULL DEFAULT NULL ,
+    PRIMARY KEY (`id`), UNIQUE (`username`)) ENGINE = InnoDB;
+
 INSERT INTO `golyak` (`id`, `nev`, `email`, `szak`, `telefonszam`, `cim`, `nem`,
     `oktatasiAzonosito`, `szuletesiDatum`, `szuletesiHely`, `poloMeret`,
     `hetfo`, `kedd`, `szerda`, `csutortok`, `pentek`, `anyjaNeve`, `allergia`,
