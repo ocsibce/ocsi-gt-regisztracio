@@ -7,6 +7,7 @@
 
     include_once "../config/database.php";
     include_once "../objects/regisztracio_settings.php";
+    include_once '../objects/user.php';
 
     $database = new Database();
     $db = $database->getConnection();
@@ -16,8 +17,28 @@
     if (isset($_GET['eles'])) {
         $settings->readEles();
     } else if (isset($_GET['preview'])) {
+        $authToken = User::getAuthToken();
+        if (!User::validateToken($authToken)) {
+            http_response_code(400);
+            echo json_encode(
+                array(
+                    "message" => 'Unauthorized'
+                )
+            );
+            die();
+        }
         $settings->readPreview();
     } else {
+        $authToken = User::getAuthToken();
+        if (!User::validateToken($authToken)) {
+            http_response_code(400);
+            echo json_encode(
+                array(
+                    "message" => 'Unauthorized'
+                )
+            );
+            die();
+        }
         $settings->id = isset($_GET['id']) ? $_GET['id'] : die();
         $settings->readOne();
     }

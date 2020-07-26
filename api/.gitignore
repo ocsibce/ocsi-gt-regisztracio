@@ -1,1 +1,3 @@
 src/config/database_ocsi.php
+vendor
+secrets_ocsi.php

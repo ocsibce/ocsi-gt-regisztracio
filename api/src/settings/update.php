@@ -26,6 +26,18 @@
         return;
     }
 
+    include_once '../objects/user.php';
+    $authToken = User::getAuthToken();
+    if (!User::validateToken($authToken)) {
+        http_response_code(400);
+        echo json_encode(
+            array(
+                "message" => 'Unauthorized'
+            )
+        );
+        die();
+    }
+
     include_once "../config/database.php";
     include_once "../objects/regisztracio_settings.php";
 

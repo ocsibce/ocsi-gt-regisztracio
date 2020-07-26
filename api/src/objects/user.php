@@ -1,7 +1,9 @@
 <?php
+    require __DIR__ . '/../vendor/autoload.php';
+    use \Firebase\JWT\JWT;
     class User {
         private $conn;
-        private $table_name = "user";
+        private $table_name = "users";
 
         public $id;
         public $username;
@@ -13,7 +15,10 @@
         }
 
         public function read() {
-
+            $query = "SELECT id, username, created FROM " . $this->table_name . " ORDER BY created";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            return $stmt;
         }
 
         public function create() {
@@ -23,7 +28,7 @@
             $stmt = $this->conn->prepare($query);
 
             $this->username = htmlspecialchars(strip_tags($this->username));
-            $this->password = password_hash($this->password);
+            $this->password = password_hash($this->password, PASSWORD_DEFAULT);
 
             $stmt->bindParam(":username", $this->username);
             $stmt->bindParam(":password", $this->password);
@@ -52,11 +57,67 @@
 
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if (password_verify($this->password, $row["passowrd"])) {
+            if (password_verify($this->password, $row["password"])) {
                 return true;
             }
 
             return false;
+        }
+
+        public function createToken() {
+            require '../config/secrets.php';
+
+            $payload = array(
+                "username" => $this->username,
+                "iat" => time(),
+                "nbf" => time() + 6,
+                "expire" => time() + 86400,
+            );
+
+            return JWT::encode($payload, $key);
+        }
+
+        public static function getAuthToken() {
+            $headers = apache_request_headers();
+            if (isset($headers['Authorization'])) {
+                $auth = $headers['Authorization'];
+                $auth_array = explode(' ', $auth);
+                if ($auth_array[0] != 'Bearer') {
+                    http_response_code(400);
+                    echo json_encode(
+                        array(
+                            "message" => 'Authorization not valid!'
+                        )
+                    );
+                    die();
+                }
+                return $auth_array[1];
+            } else {
+                http_response_code(400);
+                echo json_encode(
+                    array(
+                        "message" => 'No authorization sent'
+                    )
+                );
+                die();
+            }
+        }
+
+        public static function validateToken($tokenString) {
+            require '../config/secrets.php';
+
+            try {
+                $decoded = JWT::decode($tokenString, $key, array('HS256'));
+            } catch (Exception $e) {
+                return false;
+            }
+            if (time() < $decoded->nbf) {
+                return false;
+            }
+            if (time() > $decoded->expire) {
+                return false;
+            }
+            return true;
         }
 
 

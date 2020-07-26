@@ -8,6 +8,18 @@
     $database = new Database();
     $db = $database->getConnection();
 
+    include_once '../objects/user.php';
+    $authToken = User::getAuthToken();
+    if (!User::validateToken($authToken)) {
+        http_response_code(400);
+        echo json_encode(
+            array(
+                "message" => 'Unauthorized'
+            )
+        );
+        die();
+    }
+
     $settings = new RegisztracioSettings($db);
 
     $stmt = $settings->read();

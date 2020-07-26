@@ -1,0 +1,13 @@
+{
+    "name": "matecsornyei/ocsiapi",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Mate Csornyei",
+            "email": "mate@csornyei.com"
+        }
+    ],
+    "require": {
+        "firebase/php-jwt": "^5.2"
+    }
+}

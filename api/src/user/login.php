@@ -9,7 +9,7 @@
     if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
         if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
-            header("Access-Control-Allow-Methods: GET, POST, PUT, OPTIONS");
+            header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 
         if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
             header("Access-Control-Allow-Headers:        {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
@@ -26,37 +26,42 @@
         return;
     }
 
+    include_once '../config/database.php';
     include_once '../objects/user.php';
-    $authToken = User::getAuthToken();
-    if (!User::validateToken($authToken)) {
-        http_response_code(400);
-        echo json_encode(
-            array(
-                "message" => 'Unauthorized'
-            )
-        );
-        die();
-    }
-
-    include_once "../config/database.php";
-    include_once "../objects/regisztracio_settings.php";
 
     $database = new Database();
     $db = $database->getConnection();
 
-    $settings = new RegisztracioSettings($db);
+    $user = new User($db);
 
     $data = json_decode(file_get_contents("php://input"));
 
-    $settings->id = $data->id;
-    $settings->preview = $data->preview;
+    if (
+        !empty($data->username) &&
+        !empty($data->password)
+    ) {
+        $user->username = $data->username;
+        $user->password = $data->password;
 
-    if($settings->preview()) {
-        http_response_code(200);
+        if ($user->login()) {
+            http_response_code(200);
 
-        echo json_encode(array("message" => "Settings were updated"));
+            echo json_encode(
+                array("token" => $user->createToken())
+            );
+        } else {
+            http_response_code(401);
+
+            echo json_encode(
+                array("message" => "Not allowed")
+            );
+        }
+
     } else {
-        http_response_code(503);
-        echo json_encode(array("message" => "Unable to update settings"));
+        http_response_code(400);
+
+        echo json_encode(
+            array("message" => "No login data provided")
+        );
     }
 ?>

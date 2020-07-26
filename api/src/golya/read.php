@@ -5,6 +5,18 @@
     include_once '../config/database.php';
     include_once '../objects/golya.php';
 
+    include_once '../objects/user.php';
+    $authToken = User::getAuthToken();
+    if (!User::validateToken($authToken)) {
+        http_response_code(400);
+        echo json_encode(
+            array(
+                "message" => 'Unauthorized'
+            )
+        );
+        die();
+    }
+
     $database = new Database();
     $db = $database->getConnection();
 
