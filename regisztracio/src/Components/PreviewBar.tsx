@@ -23,8 +23,7 @@ const TopBarRow = styled.div`
 const PreviewBar : React.FC = props => {
 
     const dispatch = useDispatch();
-    const selectedTime = useSelector((state: InitialState) => {return state.time});
-    const selectedResult = useSelector((state: InitialState) => state.result);
+    const {time, result, loading} = useSelector((state: InitialState) => state);
 
     const changeTime = (time: Time) => {
         dispatch(timeChanged(time))
@@ -34,7 +33,7 @@ const PreviewBar : React.FC = props => {
         dispatch(resultChanged(result));
     }
 
-    const resultRow = selectedTime === "during" ? (<TopBarRow>
+    const resultRow = time === "during" ? (<TopBarRow>
         <div>Eredmény</div>
         <div>
             <input
@@ -44,7 +43,7 @@ const PreviewBar : React.FC = props => {
                 onChange={() => {
                     changeResult("sikeres");
                 }}
-                checked={selectedResult === "sikeres"}
+                checked={result === "sikeres"}
             />
             <label htmlFor="sikeres">Sikeres regisztráció</label>
         </div>
@@ -56,7 +55,7 @@ const PreviewBar : React.FC = props => {
                 onChange={() => {
                     changeResult("sikertelen");
                 }}
-                checked={selectedResult === "sikertelen"}
+                checked={result === "sikertelen"}
             />
             <label htmlFor="sikertelen">Sikertelen regisztráció</label>
         </div>
@@ -68,7 +67,7 @@ const PreviewBar : React.FC = props => {
                 onChange={() => {
                     changeResult("dupla");
                 }}
-                checked={selectedResult === "dupla"}
+                checked={result === "dupla"}
             />
             <label htmlFor="dupla">Ismétlődő regisztráció</label>
         </div>
@@ -80,7 +79,7 @@ const PreviewBar : React.FC = props => {
                 onChange={() => {
                     changeResult(null);
                 }}
-                checked={selectedResult === null}
+                checked={result === null}
             />
             <label htmlFor="none">Regisztráció előtt</label>
         </div>
@@ -88,7 +87,8 @@ const PreviewBar : React.FC = props => {
         : null;
     return (
         <TopBar>
-            <TopBarRow>
+            {loading? null : <>
+                <TopBarRow>
                 <div>
                     Preview Mode On
                 </div>
@@ -100,7 +100,7 @@ const PreviewBar : React.FC = props => {
                         onChange={() => {
                             changeTime("before");
                         }}
-                        checked={selectedTime === "before"}
+                        checked={time === "before"}
                     />
                     <label htmlFor="before">Regisztráció előtt</label>
                 </div>
@@ -112,7 +112,7 @@ const PreviewBar : React.FC = props => {
                         onChange={() => {
                             changeTime("during");
                         }}
-                        checked={selectedTime === "during"}
+                        checked={time === "during"}
                     />
                     <label htmlFor="during">Regisztráció közben</label>
                 </div>
@@ -124,12 +124,14 @@ const PreviewBar : React.FC = props => {
                         onChange={() => {
                             changeTime("after");
                         }}
-                        checked={selectedTime === "after"}
+                        checked={time === "after"}
                     />
                     <label htmlFor="after">Regisztráció után</label>
                 </div>
             </TopBarRow>
             {resultRow}
+            </>
+            }
         </TopBar>
     );
 }

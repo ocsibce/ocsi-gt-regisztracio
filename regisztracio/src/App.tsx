@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import { getCookie } from 'react-use-cookie';
 import PreviewBar from './Components/PreviewBar';
 import { useSelector, useDispatch } from 'react-redux';
 import { InitialState, Time } from './utils/types';
@@ -12,9 +13,9 @@ import Spinner from './Components/Spinner';
 import LanguageChanger from './Components/LanguageChanger';
 import ocsiApi from './API/ocsiApi';
 
-import MockData from './mockState.json';
-import { dataFromApi } from './State/actions';
-import { AxiosResponse, AxiosError } from 'axios';
+import { dataFromApi, setPreview, requestSent } from './State/actions';
+import { AxiosError } from 'axios';
+import { initialState } from '.';
 
 const AppContainer = styled.div`
   display: flex;
@@ -30,7 +31,7 @@ const Main = styled.main`
   position: relative;
 `;
 
-function App(props: any) {
+function App() {
 
   const {loading, showPreview, showView} = useSelector((state: InitialState) => ({
     loading: state.loading,
@@ -39,11 +40,31 @@ function App(props: any) {
   }));
 
   const dispatch = useDispatch();
+  const ocsiAuthToken = getCookie('ocsi-auth-token');
 
   useEffect(() => {
-    const url = `/settings/readOne.php?${showPreview ? 'preview' : 'eles'}=1`
-    ocsiApi.get(url).then(({data}) => {
-      console.log(data);
+    const authArray = ocsiAuthToken.split('.');
+    if (authArray.length === 3) {
+      dispatch(setPreview(true));
+    } else {
+      dispatch(setPreview(false));
+    }
+  }, [ocsiAuthToken]);
+
+  useEffect(() => {
+    const url = `/settings/readOne.php?${showPreview ? 'preview' : 'eles'}=1`;
+
+    let config = undefined;
+
+    if (showPreview) {
+      config = {
+        headers: {
+          'X-OCSI-AUTHORIZATION': `Bearer ${ocsiAuthToken}`,
+        }
+      };
+    }
+
+    ocsiApi.get(url, config).then(({data}) => {
       const startTime = data.start_date;
       const endTime = data.end_date;
       const details = JSON.parse(data.reszletek);
@@ -78,14 +99,15 @@ function App(props: any) {
         adatkezelesEn,
         hazirend,
         hazirendEn,
-        bannerLink
+        bannerLink,
+        loading: false,
       }
-      console.log(settingsState);
       dispatch(dataFromApi(settingsState));
     }).catch((err: AxiosError) => {
+      dispatch(dataFromApi(initialState));
       console.log(err);
     })
-  }, []);
+  }, [showPreview]);
 
   let mainView = null;
 

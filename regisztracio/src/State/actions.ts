@@ -21,10 +21,10 @@ export function requestSent(): Action {
     }
 }
 
-export function previewChanged(): Action {
+export function setPreview(value: boolean): Action {
     return {
         type: PREVIEW_CHANGED,
-        payload: null
+        payload: value
     }
 }
 

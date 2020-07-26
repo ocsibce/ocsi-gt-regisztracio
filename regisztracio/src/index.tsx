@@ -9,7 +9,7 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 
 export const initialState: InitialState = {
-  preview: true,
+  preview: false,
   time: "during",
   result: null,
   startTime: new Date("2020-07-27T12:00:00"),

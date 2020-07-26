@@ -78,9 +78,8 @@
         }
 
         public static function getAuthToken() {
-            $headers = apache_request_headers();
-            if (isset($headers['Authorization'])) {
-                $auth = $headers['Authorization'];
+            if (isset($_SERVER['HTTP_X_OCSI_AUTHORIZATION'])) {
+                $auth = $_SERVER['HTTP_X_OCSI_AUTHORIZATION'];
                 $auth_array = explode(' ', $auth);
                 if ($auth_array[0] != 'Bearer') {
                     http_response_code(400);
