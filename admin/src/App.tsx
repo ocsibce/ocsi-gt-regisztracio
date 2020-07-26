@@ -6,6 +6,7 @@ import { BrowserRouter as Router,
 import AdminNavbar from './Components/Navbar';
 import Golyak from './Components/GolyaPage/Golyak';
 import Settings from './Components/SettingsPage/Settings';
+import LoginPage from './Components/LoginPage';
 
 function App() {
 
@@ -19,6 +20,9 @@ function App() {
           </Route>
           <Route path="/golyak">
             <Golyak />
+          </Route>
+          <Route path="/login">
+            <LoginPage />
           </Route>
         </Switch>
       </main>

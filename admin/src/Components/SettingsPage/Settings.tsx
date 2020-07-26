@@ -10,15 +10,32 @@ import List from './List';
 import { useDispatch, useSelector } from 'react-redux';
 import { InitialState } from '../../utils/types';
 import { settingsResponse, editingSetting } from '../../State/actions';
+import { useHistory } from 'react-router-dom';
+import { getCookie } from 'react-use-cookie';
 
 const SettingsPage : React.FC = props => {
 
     const dispatch = useDispatch();
     const reloadSettings = useSelector((state: InitialState) => (state.savingSettings));
     const [editedSetting, setEditedSetting] = useState(-1);
+    const history = useHistory();
+    const ocsiAuthToken = getCookie('ocsi-auth-token');
 
     useEffect(() => {
-        ocsiApi.get('/settings/read.php').then(({data: {records}}) => {
+        if (typeof ocsiAuthToken == undefined) {
+            history.push('/login');
+        }
+        if (ocsiAuthToken.length < 2) {
+            history.push('/login');
+        }
+    }, []);
+
+    useEffect(() => {
+        ocsiApi.get('/settings/read.php', {
+            headers: {
+                'X_OCSI_AUTHORIZATION': `Bearer ${ocsiAuthToken}`
+            }
+        }).then(({data: {records}}) => {
             dispatch(settingsResponse(records))
         }).catch((err: AxiosError) => {
             console.log(err);
@@ -27,7 +44,11 @@ const SettingsPage : React.FC = props => {
 
     useEffect(() => {
         if (editedSetting !== -1) {
-            ocsiApi.get(`/settings/readOne.php?id=${editedSetting}`).then(({data}) => {
+            ocsiApi.get(`/settings/readOne.php?id=${editedSetting}`, {
+                headers: {
+                    'X_OCSI_AUTHORIZATION': `Bearer ${ocsiAuthToken}`
+                }
+            }).then(({data}) => {
                 dispatch(editingSetting(data));
             }).catch((err: AxiosError) => {
                 console.log(err);

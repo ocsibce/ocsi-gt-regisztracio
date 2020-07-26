@@ -11,13 +11,29 @@ import { golyaRequest } from '../../State/actions';
 import Control from './Control';
 import Filters from './Filters';
 import GolyaList from './GolyaList';
+import { useHistory } from 'react-router-dom';
+import { getCookie } from 'react-use-cookie';
 
 const Golyak = () => {
 
     const dispatch = useDispatch();
+    const history = useHistory();
+    const ocsiAuthToken = getCookie('ocsi-auth-token');
 
     useEffect(() => {
-        ocsiApi.get('/golya/read.php').then((response: AxiosResponse) => {
+        if (typeof ocsiAuthToken == undefined) {
+            history.push('/login');
+        }
+        if (ocsiAuthToken.length < 2) {
+            history.push('/login');
+        }
+        ocsiApi.get('/golya/read.php',
+            {
+                headers: {
+                    'X_OCSI_AUTHORIZATION': `Bearer ${ocsiAuthToken}`
+                }
+            }
+        ).then((response: AxiosResponse) => {
           const golyaAdatok = response.data.records;
           const javitottGolyaAdatok = golyaAdatok.map((golya: any) => {
             golya.hetfo = golya.hetfo === "1";

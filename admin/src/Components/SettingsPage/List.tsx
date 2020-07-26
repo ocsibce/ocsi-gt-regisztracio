@@ -8,6 +8,7 @@ import { InitialState, SettingsData } from '../../utils/types';
 import { settingsSave } from '../../State/actions';
 import {BsFillTrashFill} from 'react-icons/bs';
 import styled from 'styled-components';
+import { getCookie } from 'react-use-cookie';
 
 const ActionButtonTableCell = styled.td`
     text-align: center;
@@ -26,6 +27,7 @@ const List = (props: {handleSelect: React.Dispatch<React.SetStateAction<number>>
     const settings = useSelector((state: InitialState) => state.settings);
     const [elesID, setElesID] = useState(-1);
     const [previewID, setPreviewID] = useState(-1);
+    const ocsiAuthToken = getCookie('ocsi-auth-token');
 
     const handleElesChecked = (id: number) => {
         setElesID(id);
@@ -46,6 +48,7 @@ const List = (props: {handleSelect: React.Dispatch<React.SetStateAction<number>>
             }, { headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json',
+                    'X_OCSI_AUTHORIZATION': `Bearer ${ocsiAuthToken}`,
                 }}
             );
             console.log(elesitResp);
@@ -57,6 +60,7 @@ const List = (props: {handleSelect: React.Dispatch<React.SetStateAction<number>>
             }, { headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
+                'X_OCSI_AUTHORIZATION': `Bearer ${ocsiAuthToken}`,
             }});
 
             console.log(previewResp);
@@ -71,6 +75,7 @@ const List = (props: {handleSelect: React.Dispatch<React.SetStateAction<number>>
         const deleteResp = await ocsiApi.delete(`/settings/delete.php?id=${id}`, { headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json',
+            'X_OCSI_AUTHORIZATION': `Bearer ${ocsiAuthToken}`,
         }});
         console.log(deleteResp);
         dispatch(settingsSave());
