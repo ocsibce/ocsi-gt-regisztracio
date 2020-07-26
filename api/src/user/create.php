@@ -26,6 +26,19 @@
         return;
     }
 
+    include_once '../objects/user.php';
+    include '../config/secrets.php';
+    $authToken = User::getAuthToken();
+    if ($authToken != $create_secret) {
+        http_response_code(400);
+        echo json_encode(
+            array(
+                "message" => 'Unauthorized'
+            )
+        );
+        die();
+    }
+
     include_once '../config/database.php';
     include_once '../objects/user.php';
 
