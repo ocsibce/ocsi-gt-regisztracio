@@ -25,7 +25,11 @@ export const initialState: InitialState = {
   },
   szakok: null,
   szakokEn: null,
-  language: 'hu'
+  language: 'hu',
+  adatkezeles: [],
+  adatkezelesEn: [],
+  hazirend: [],
+  hazirendEn: []
 }
 
 

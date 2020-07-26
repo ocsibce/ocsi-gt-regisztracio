@@ -6,6 +6,7 @@ import ocsiApi from '../../API/ocsiApi';
 import { RegisztracioAdat, InitialState, Szak } from '../../utils/types';
 import { requestSent, resultChanged } from '../../State/actions';
 import { useTranslation } from 'react-i18next';
+import Modal from './Modal';
 
 const FormContainer = styled.div`
     display: flex;
@@ -157,11 +158,18 @@ const Form : React.FC = props => {
             pentek: false,
         },
         egyeb: ""
-    })
+    });
+    const [adatvedelemElfogad, setAdatvedelemElfogad] = useState(false);
+    const [hazirendElfogad, setHazirendElfogad] = useState(false);
+    const [hazirendModalOpen, setHazirendModalOpen] = useState(false);
+    const [adatvedelemModalOpen, setAdatvedelemModalOpen] = useState(false);
+
     const [isFormValid, setIsFormValid] = useState(false);
 
-    const {szakok, szakokEn, language} = useSelector((state: InitialState) => state);
+    const {szakok, szakokEn, language, adatkezeles, hazirend} = useSelector((state: InitialState) => state);
     const dispatch = useDispatch();
+
+    console.log(adatkezeles);
 
     const [t] = useTranslation();
 
@@ -175,7 +183,7 @@ const Form : React.FC = props => {
 
     useEffect(() => {
         validateForm();
-    }, [regAdat])
+    }, [regAdat, adatvedelemElfogad, hazirendElfogad])
 
     const nevChange = (event: any) => {
         const nev = event.target.value;
@@ -464,7 +472,23 @@ const Form : React.FC = props => {
             setIsFormValid(false);
             return;
         }
+        if(!adatvedelemElfogad || !hazirendElfogad) {
+            setIsFormValid(false);
+            return;
+        }
         setIsFormValid(true);
+    }
+
+    const onAcceptCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, checkbox: "hazirend" | "adatvedelem") => {
+        event.preventDefault();
+        switch (checkbox) {
+            case "hazirend":
+                setHazirendModalOpen(true);
+                break;
+            case "adatvedelem":
+                setAdatvedelemModalOpen(true);
+                break;
+        }
     }
 
     return (
@@ -633,20 +657,20 @@ const Form : React.FC = props => {
                     <div>
                         <input
                             type="checkbox"
-                            name="regulations"
-                            id="regulations"
-                            checked={false}
-                            onChange={() => {console.log('regulations')}} />
-                        <BoxLabel htmlFor="regulations">{t`agree`} {t`regulations`} </BoxLabel>
+                            name="hazirend"
+                            id="hazirend"
+                            checked={hazirendElfogad}
+                            onChange={(event) => {onAcceptCheckboxChange(event, "hazirend")}} />
+                        <BoxLabel htmlFor="hazirend">{t`agree`} {t`regulations`} </BoxLabel>
                     </div>
                     <div>
                         <input
                             type="checkbox"
                             name="privacy policy"
                             id="privacy policy"
-                            checked={false}
-                            onChange={() => {console.log('privacy policy')}} />
-                        <BoxLabel htmlFor="privacy policy">{t`agree`} {t`privacy_policy`} </BoxLabel>
+                            checked={adatvedelemElfogad}
+                            onChange={(event) => {onAcceptCheckboxChange(event, "adatvedelem")}} />
+                        <BoxLabel htmlFor="privacy policy">{t`agree`}{t`privacy_policy`} </BoxLabel>
                     </div>
                     </TopMarginInputGroup>
                 </FormColLast>
@@ -656,6 +680,30 @@ const Form : React.FC = props => {
                 :
                 <DisabledButton disabled>{t`registration`}</DisabledButton>
             }
+        <Modal
+            dataArray={adatkezeles}
+            modalTitle="Adatkezelési nyilatkozat"
+            onAccept={() => {
+                setAdatvedelemElfogad(true);
+                setAdatvedelemModalOpen(false);
+            }}
+            onClose={() => {
+                setAdatvedelemModalOpen(false);
+            }}
+            isOpen={adatvedelemModalOpen}
+        />
+        <Modal
+            dataArray={hazirend}
+            modalTitle="Házirend"
+            onAccept={() => {
+                setHazirendElfogad(true);
+                setHazirendModalOpen(false);
+            }}
+            onClose={() => {
+                setHazirendModalOpen(false);
+            }}
+            isOpen={hazirendModalOpen}
+        />
         </form>
     );
 }

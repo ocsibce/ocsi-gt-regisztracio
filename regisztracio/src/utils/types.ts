@@ -14,6 +14,11 @@ export type Szak = {
     betelt: boolean
 }
 
+export type Markdown = {
+    type: number,
+    text: string
+}
+
 export type InitialState = {
     loading: Boolean
     preview: Boolean,
@@ -21,10 +26,14 @@ export type InitialState = {
     result: Result,
     startTime: Date,
     endTime: Date,
-    details: Details
-    detailsEn: Details
+    details: Details,
+    detailsEn: Details,
     szakok: Szak[] | null,
     szakokEn: Szak[] | null,
+    adatkezeles: Markdown[],
+    adatkezelesEn: Markdown[],
+    hazirend: Markdown[],
+    hazirendEn: Markdown[],
     language: "hu" | "en",
 }
 
