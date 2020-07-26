@@ -13,7 +13,7 @@ import Spinner from './Components/Spinner';
 import LanguageChanger from './Components/LanguageChanger';
 import ocsiApi from './API/ocsiApi';
 
-import { dataFromApi } from './State/actions';
+import { dataFromApi, setPreview } from './State/actions';
 import { AxiosError } from 'axios';
 
 const AppContainer = styled.div`
@@ -30,7 +30,7 @@ const Main = styled.main`
   position: relative;
 `;
 
-function App(props: any) {
+function App() {
 
   const {loading, showPreview, showView} = useSelector((state: InitialState) => ({
     loading: state.loading,
@@ -40,6 +40,15 @@ function App(props: any) {
 
   const dispatch = useDispatch();
   const ocsiAuthToken = getCookie('ocsi-auth-token');
+
+  useEffect(() => {
+    const authArray = ocsiAuthToken.split('.');
+    if (authArray.length === 3) {
+      dispatch(setPreview(true));
+    } else {
+      dispatch(setPreview(false));
+    }
+  }, [ocsiAuthToken]);
 
   useEffect(() => {
     const url = `/settings/readOne.php?${showPreview ? 'preview' : 'eles'}=1`;

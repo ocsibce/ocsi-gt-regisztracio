@@ -23,7 +23,7 @@ const reducer: Reducer<InitialState, any> = (
         case PREVIEW_CHANGED:
             return {
                 ...state,
-                preview: !state.preview
+                preview: action.payload
             }
         case TIME_CHANGED:
             return {
