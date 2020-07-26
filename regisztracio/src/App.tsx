@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import { getCookie } from 'react-use-cookie';
 import PreviewBar from './Components/PreviewBar';
 import { useSelector, useDispatch } from 'react-redux';
 import { InitialState, Time } from './utils/types';
@@ -12,9 +13,8 @@ import Spinner from './Components/Spinner';
 import LanguageChanger from './Components/LanguageChanger';
 import ocsiApi from './API/ocsiApi';
 
-import MockData from './mockState.json';
 import { dataFromApi } from './State/actions';
-import { AxiosResponse, AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 
 const AppContainer = styled.div`
   display: flex;
@@ -39,10 +39,22 @@ function App(props: any) {
   }));
 
   const dispatch = useDispatch();
+  const ocsiAuthToken = getCookie('ocsi-auth-token');
 
   useEffect(() => {
-    const url = `/settings/readOne.php?${showPreview ? 'preview' : 'eles'}=1`
-    ocsiApi.get(url).then(({data}) => {
+    const url = `/settings/readOne.php?${showPreview ? 'preview' : 'eles'}=1`;
+
+    let config = undefined;
+
+    if (showPreview) {
+      config = {
+        headers: {
+          'X-OCSI-AUTHORIZATION': `Bearer ${ocsiAuthToken}`,
+        }
+      };
+    }
+
+    ocsiApi.get(url, config).then(({data}) => {
       console.log(data);
       const startTime = data.start_date;
       const endTime = data.end_date;
@@ -80,7 +92,6 @@ function App(props: any) {
         hazirendEn,
         bannerLink
       }
-      console.log(settingsState);
       dispatch(dataFromApi(settingsState));
     }).catch((err: AxiosError) => {
       console.log(err);

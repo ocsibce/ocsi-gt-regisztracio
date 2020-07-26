@@ -8883,6 +8883,11 @@ react-scripts@3.4.1:
   optionalDependencies:
     fsevents "2.1.2"
 
+react-use-cookie@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-use-cookie/-/react-use-cookie-1.1.0.tgz#e3139d3c71d7df10c77dad9cbdc2570c09d1a969"
+  integrity sha512-sw+USvuoeFkdSNmuSwvRjA23jBej3w0YfEOY2CdBBN6qrW55CsZiVqYpQd8A53hv/ZGvhdj/ibfRH9WfuKZEOg==
+
 react@^16.13.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"
