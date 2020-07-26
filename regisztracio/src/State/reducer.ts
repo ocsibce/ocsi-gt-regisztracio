@@ -8,10 +8,10 @@ const reducer: Reducer<InitialState, any> = (
     action: Action) => {
     switch (action.type) {
         case DATA_FROM_API:
-            const {startTime, endTime, time, details, detailsEn, szakok, szakokEn} = action.payload;
+            const {startTime, endTime, time, details, detailsEn, szakok, szakokEn, loading} = action.payload;
             return {
                 ...state,
-                loading: false,
+                loading,
                 startTime,
                 endTime,
                 time,

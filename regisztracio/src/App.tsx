@@ -13,8 +13,9 @@ import Spinner from './Components/Spinner';
 import LanguageChanger from './Components/LanguageChanger';
 import ocsiApi from './API/ocsiApi';
 
-import { dataFromApi, setPreview } from './State/actions';
+import { dataFromApi, setPreview, requestSent } from './State/actions';
 import { AxiosError } from 'axios';
+import { initialState } from '.';
 
 const AppContainer = styled.div`
   display: flex;
@@ -64,7 +65,6 @@ function App() {
     }
 
     ocsiApi.get(url, config).then(({data}) => {
-      console.log(data);
       const startTime = data.start_date;
       const endTime = data.end_date;
       const details = JSON.parse(data.reszletek);
@@ -99,13 +99,15 @@ function App() {
         adatkezelesEn,
         hazirend,
         hazirendEn,
-        bannerLink
+        bannerLink,
+        loading: false,
       }
       dispatch(dataFromApi(settingsState));
     }).catch((err: AxiosError) => {
+      dispatch(dataFromApi(initialState));
       console.log(err);
     })
-  }, []);
+  }, [showPreview]);
 
   let mainView = null;
 
