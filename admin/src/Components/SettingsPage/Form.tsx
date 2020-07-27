@@ -11,11 +11,14 @@ import ocsiApi  from '../../API/ocsiApi';
 import { AxiosResponse, AxiosError } from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { settingsSave, editingSetting } from '../../State/actions';
+import { getCookie } from 'react-use-cookie';
 
 const SettingsForm = ({isEditing, finishedEditing}: {isEditing: boolean, finishedEditing: () => void}) => {
 
     const dispatch = useDispatch();
     const {editing} = useSelector((state: InitialState) => state);
+
+    const ocsiAuthToken = getCookie('ocsi-auth-token');
 
     const [id, setID] = useState(-1);
     const [ev, setEv] = useState("");
@@ -142,6 +145,7 @@ const SettingsForm = ({isEditing, finishedEditing}: {isEditing: boolean, finishe
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json',
+                    'X_OCSI_AUTHORIZATION': `Bearer ${ocsiAuthToken}`,
                 }
             });
             console.log(updateResp);
@@ -156,6 +160,7 @@ const SettingsForm = ({isEditing, finishedEditing}: {isEditing: boolean, finishe
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
+                'X_OCSI_AUTHORIZATION': `Bearer ${ocsiAuthToken}`,
             }
         })
         console.log(postResponse);
