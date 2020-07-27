@@ -483,9 +483,11 @@ const Form : React.FC = props => {
         event.preventDefault();
         switch (checkbox) {
             case "hazirend":
+                setHazirendElfogad(true);
                 setHazirendModalOpen(true);
                 break;
             case "adatvedelem":
+                setAdatvedelemElfogad(true);
                 setAdatvedelemModalOpen(true);
                 break;
         }
